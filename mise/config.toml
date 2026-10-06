@@ -1,7 +1,6 @@
 [tools]
 maven = "latest"
 node = "22"
-php = "8.5"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
