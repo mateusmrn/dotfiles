@@ -57,7 +57,6 @@ python-pip
 qbittorrent
 re2c
 reflector
-ruby-rake
 sddm
 spectacle
 sudo

@@ -2,6 +2,8 @@
 beekeeper-studio-bin
 claude-code
 claude-desktop
+flyctl
+flyctl-debug
 gitkraken
 insomnia
 mongosh-bin
