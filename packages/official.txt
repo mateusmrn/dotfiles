@@ -70,6 +70,7 @@ ttf-input
 ttf-iosevka-nerd
 ttf-jetbrains-mono-nerd
 unzip
+uv
 vlc
 vlc-plugin-ffmpeg
 vlc-plugin-freetype

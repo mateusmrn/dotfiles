@@ -279,8 +279,6 @@ toggle do not disturb=none,none,Toggle do not disturb
 _launch=Meta+Return
 
 [services][org.kde.spectacle.desktop]
-CurrentMonitorScreenShot=none
-OpenWithoutScreenshot=none
 _launch=Print\tMeta+Shift+P\tMeta+Shift+S
 
 [slack]
