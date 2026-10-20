@@ -86,7 +86,7 @@
   "editor.formatOnPaste": true,
   "editor.cursorSurroundingLines": 15,
   "emmet.excludeLanguages": ["markdown"],
-  "python.languageServer": "Jedi",
+  "python.languageServer": "Default",
   "explorer.confirmDragAndDrop": false,
   "workbench.iconTheme": "symbols",
   "workbench.sideBar.location": "right",
@@ -204,4 +204,5 @@
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "window.confirmSaveUntitledWorkspace": false,
   "chat.viewSessions.orientation": "stacked",
+  "python.analysis.typeCheckingMode": "strict",
 }
