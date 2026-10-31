@@ -23,55 +23,55 @@
     {
       "before": ["<leader>", "m", "t"],
       "commands": ["editor.emmet.action.matchTag"],
-      "silent": true
+      "silent": true,
     },
     {
       "before": ["<leader>", "d"],
       "commands": ["editor.action.revealDefinition"],
-      "silent": true
+      "silent": true,
     },
     {
       "before": ["<leader>", "i"],
       "commands": ["editor.action.goToImplementation"],
-      "silent": true
+      "silent": true,
     },
     {
       "before": ["<leader>", "p", "d"],
       "commands": ["editor.action.peekDefinition"],
-      "silent": true
+      "silent": true,
     },
     {
       "before": ["<leader>", "p", "i"],
       "commands": ["editor.action.peekImplementation"],
-      "silent": true
+      "silent": true,
     },
     {
       "before": ["<leader>", "h"],
       "commands": ["editor.action.showHover"],
-      "silent": true
+      "silent": true,
     },
     {
       "before": ["<leader>", "r"],
       "commands": ["editor.action.rename"],
-      "silent": true
-    }
+      "silent": true,
+    },
   ],
   "vim.leader": "<space>",
   "vim.handleKeys": {
     "<C-a>": false,
-    "<C-f>": false
+    "<C-f>": false,
   },
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "vscode.typescript-language-features",
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "liveServer.settings.donotShowInfoMsg": true,
   "workbench.editor.enablePreview": true,
@@ -79,8 +79,8 @@
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "sonarlint.rules": {
     "java:S120": {
-      "level": "off"
-    }
+      "level": "off",
+    },
   },
   "eslint.alwaysShowStatus": true,
   "editor.formatOnPaste": true,
@@ -96,12 +96,12 @@
     "**/.classpath": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/.factorypath": true
+    "**/.factorypath": true,
   },
   "cSpell.enableFiletypes": ["!cpp"],
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook",
-    "{git,gitlens,git-graph}:/**/*.{md,csv,svg}": "default"
+    "{git,gitlens,git-graph}:/**/*.{md,csv,svg}": "default",
   },
   "editor.cursorStyle": "line",
   "editor.lineNumbers": "relative",
@@ -119,55 +119,55 @@
   "vim.vimrc.path": "$HOME/dotfiles/code/init.vim",
   "vim.normalModeKeyBindings": [],
   "[haskell]": {
-    "editor.defaultFormatter": "haskell.haskell"
+    "editor.defaultFormatter": "haskell.haskell",
   },
   "[lua]": {
-    "editor.defaultFormatter": "yinfei.luahelper"
+    "editor.defaultFormatter": "yinfei.luahelper",
   },
   "luahelper.format.continuation_indent_width": 2,
   "luahelper.format.indent_width": 2,
   "[java]": {
-    "editor.defaultFormatter": "redhat.java"
+    "editor.defaultFormatter": "redhat.java",
   },
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
         "scope": "keyword",
         "settings": {
-          "fontStyle": "italic bold"
-        }
-      }
-    ]
+          "fontStyle": "italic bold",
+        },
+      },
+    ],
   },
   "[cpp]": {
-    "editor.defaultFormatter": "ms-vscode.cpptools"
+    "editor.defaultFormatter": "ms-vscode.cpptools",
   },
   "[c]": {
-    "editor.defaultFormatter": "ms-vscode.cpptools"
+    "editor.defaultFormatter": "ms-vscode.cpptools",
   },
   "files.associations": {
     "*.y": "yacc",
     ".example.env": "properties",
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
   },
   "C_Cpp.vcFormat.indent.caseLabels": true,
   "C_Cpp.vcFormat.indent.caseContentsWhenBlock": true,
   "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml"
+    "editor.defaultFormatter": "redhat.vscode-xml",
   },
   "[astro]": {
-    "editor.defaultFormatter": "astro-build.astro-vscode"
+    "editor.defaultFormatter": "astro-build.astro-vscode",
   },
   "[tailwindcss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "symbols.hidesExplorerArrows": false,
   "apc.stylesheet": {
     ".title-label > h2": "display: none",
-    ".editor-actions": "display: none"
+    ".editor-actions": "display: none",
   },
   "apc.listRow": {
-    "height": 24
+    "height": 24,
   },
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
@@ -177,21 +177,20 @@
     "*.tsx": "${capture}.ts",
     "tsconfig.json": "tsconfig.*.json",
     "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, .eslint*, .prettier*, .editorconfig, tsconfig.*, .nvmrc",
-    ".env": ".env*"
+    ".env": ".env*",
   },
   "workbench.startupEditor": "none",
   "extensions.ignoreRecommendations": true,
   "window.zoomLevel": 1,
-  "typescript.tsserver.log": "off",
-  "workbench.activityBar.location": "hidden",
+  "typescript.tsserver.log": "verbose",
   "editor.stickyScroll.enabled": false,
   "[go]": {
-    "editor.defaultFormatter": "golang.go"
+    "editor.defaultFormatter": "golang.go",
   },
   "prettier.printWidth": 100,
   "prettier.singleQuote": true,
   "[sql]": {
-    "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
+    "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode",
   },
   "prettier.proseWrap": "always",
   "chat.commandCenter.enabled": false,
@@ -200,5 +199,12 @@
   "window.commandCenter": false,
   "window.menuBarVisibility": "compact",
   "diffEditor.ignoreTrimWhitespace": false,
-  "git.openRepositoryInParentFolders": "never"
+  "git.openRepositoryInParentFolders": "never",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "workbench.activityBar.location": "hidden",
+  "chat.disableAIFeatures": true,
+  "[html]": {
+    "editor.suggest.insertMode": "replace",
+  },
+  "window.confirmSaveUntitledWorkspace": false,
 }

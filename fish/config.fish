@@ -1,3 +1,7 @@
+# claude accounts
+abbr -a wcl wclaude
+abbr -a pcl pclaude
+
 # abbreviations
 abbr -a gs git status
 abbr -a gd git diff
