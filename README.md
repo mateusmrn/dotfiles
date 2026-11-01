@@ -70,9 +70,8 @@ end
 50. `mkdir ~/.config/hypr`
 51. `sudo ln -s ~/dotfiles/hypr/hyprland.lua ~/.config/hypr/hyprland.lua`
 52. `sudo ln -s ~/dotfiles/hypr/hyprpaper.conf ~/.config/hypr/hyprpaper.conf`
-53. `mkdir ~/.config/quickshell`
-54. `ln -s ~/dotfiles/quickshell/shell.qml ~/.config/quickshell/shell.qml`
-55. Reboot
+53. `ln -s ~/dotfiles/quickshell ~/.config/quickshell`
+54. Reboot
 
 ## Wishlist
 
