@@ -259,7 +259,7 @@ activate task manager entry 8=Meta+8,Meta+8,Activate Task Manager Entry 8
 activate task manager entry 9=Meta+9,Meta+9,Activate Task Manager Entry 9
 clear history=none,none,Clear Notification History
 clear-history=none,none,Clear Clipboard History
-clipboard_action=Meta+Ctrl+X,Meta+Ctrl+X,Automatic Action Popup Menu
+clipboard_action=none,Meta+Ctrl+X,Automatic Action Popup Menu
 cycle-panels=Meta+Alt+P,Meta+Alt+P,Move keyboard focus between panels
 cycleNextAction=none,none,Next History Item
 cyclePrevAction=none,none,Previous History Item
@@ -279,6 +279,8 @@ toggle do not disturb=none,none,Toggle do not disturb
 _launch=Meta+Return
 
 [services][org.kde.spectacle.desktop]
+CurrentMonitorScreenShot=none
+OpenWithoutScreenshot=none
 _launch=Print\tMeta+Shift+P\tMeta+Shift+S
 
 [slack]
