@@ -21,8 +21,36 @@ family = "Anthropic Mono Web"
 y = 5
 
 [window]
-opacity = 1.0
+opacity = 0.88
 
 [window.padding]
 x = 8
 y = 8
+
+[colors.primary]
+background = "#11293c"
+foreground = "#eaf4fa"
+
+[colors.cursor]
+text = "#11293c"
+cursor = "#19b6ee"
+
+[colors.normal]
+black   = "#0a1f2e"
+red     = "#ff5a5f"
+green   = "#4ddba0"
+yellow  = "#ffd23f"
+blue    = "#0098e3"
+magenta = "#b983e0"
+cyan    = "#19b6ee"
+white   = "#6f93a8"
+
+[colors.bright]
+black   = "#16324a"
+red     = "#ff7b7f"
+green   = "#6de8bc"
+yellow  = "#ffdc6b"
+blue    = "#5ec1eb"
+magenta = "#d1a6ec"
+cyan    = "#5ec1eb"
+white   = "#eaf4fa"
