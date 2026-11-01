@@ -21,6 +21,11 @@ hl.bind("SUPER + Return", hl.dsp.exec_cmd(terminal))
 -- open app launcher
 hl.bind("SUPER + SPACE", hl.dsp.exec_cmd(launcher))
 
+-- volume controls
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"))
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
+hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
+
 -- vim-like motion to move between windows
 hl.bind("SUPER + h", hl.dsp.focus({ direction = "left" }))
 hl.bind("SUPER + l", hl.dsp.focus({ direction = "right" }))
