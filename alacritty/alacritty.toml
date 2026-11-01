@@ -2,20 +2,20 @@
 size = 16
 
 [font.bold]
-family = "TX-02"
-style = "Bold"
+family = "Anthropic Mono Web"
+# style = "Bold"
 
 [font.bold_italic]
-family = "TX-02"
-style = "Bold Italic"
+family = "Anthropic Mono Web"
+style = "Italic"
 
 [font.italic]
-family = "TX-02"
+family = "Anthropic Mono Web"
 style = "Italic"
 
 [font.normal]
-family = "TX-02"
-style = "Medium"
+family = "Anthropic Mono Web"
+# style = "Medium"
 
 [font.offset]
 y = 5
