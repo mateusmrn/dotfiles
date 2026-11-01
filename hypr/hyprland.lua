@@ -11,6 +11,7 @@ hl.monitor({ output = "WAYLAND-1", disabled = true })
 -- autostart
 hl.on("hyprland.start", function()
     hl.exec_cmd("unset HL_INITIAL_WORKSPACE_TOKEN; hyprpaper")
+    hl.exec_cmd("unset HL_INITIAL_WORKSPACE_TOKEN; quickshell")
 end)
 
 -- kill current window
