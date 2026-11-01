@@ -9,6 +9,7 @@ ShellRoot {
             id: panel
             property var modelData
             property bool volumePopupOpen: false
+            property bool bluetoothPopupOpen: false
 
             screen: modelData
             color: "transparent"
@@ -46,9 +47,19 @@ ShellRoot {
                 }
 
                 KeyboardLayoutModule {
+                    id: keyboardModule
                     anchors.right: volumeModule.left
                     anchors.rightMargin: 12
                     anchors.verticalCenter: parent.verticalCenter
+                }
+
+                BluetoothModule {
+                    id: bluetoothModule
+                    anchors.right: keyboardModule.left
+                    anchors.rightMargin: 2
+                    anchors.verticalCenter: parent.verticalCenter
+                    active: panel.bluetoothPopupOpen
+                    onClicked: panel.bluetoothPopupOpen = !panel.bluetoothPopupOpen
                 }
 
                 ClockWidget {
@@ -63,10 +74,20 @@ ShellRoot {
                 anchorItem: volumeModule
             }
 
+            BluetoothPopup {
+                id: bluetoothPopup
+                visible: panel.bluetoothPopupOpen
+                panelWindow: panel
+                anchorItem: bluetoothModule
+            }
+
             Scrim {
                 screen: panel.screen
-                active: panel.volumePopupOpen
-                onDismissed: panel.volumePopupOpen = false
+                active: panel.volumePopupOpen || panel.bluetoothPopupOpen
+                onDismissed: {
+                    panel.volumePopupOpen = false;
+                    panel.bluetoothPopupOpen = false;
+                }
             }
         }
     }
