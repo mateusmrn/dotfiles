@@ -66,6 +66,13 @@ hl.define_submap("resize", function()
 end)
 
 hl.config({
+    general = {
+        col = {
+            -- active: full-strength cyan accent; inactive: statusbar's subtle border
+            active_border = "rgba(19b6eee6)",
+            inactive_border = "rgba(5ec1eb29)",
+        },
+    },
     input = {
         -- US and US international (dead-key accents) layouts
         kb_layout = "us,us(intl)",
