@@ -45,6 +45,12 @@ ShellRoot {
                     onClicked: panel.volumePopupOpen = !panel.volumePopupOpen
                 }
 
+                KeyboardLayoutModule {
+                    anchors.right: volumeModule.left
+                    anchors.rightMargin: 12
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
                 ClockWidget {
                     anchors.centerIn: parent
                 }

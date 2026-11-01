@@ -67,8 +67,10 @@ end)
 
 hl.config({
     input = {
-        -- map caps lock to ESC
-        kb_options = "caps:escape",
+        -- US and US international (dead-key accents) layouts
+        kb_layout = "us,us(intl)",
+        -- map caps lock to ESC; toggle keyboard layout with ALT + SHIFT
+        kb_options = "caps:escape,grp:alt_shift_toggle",
         -- how fast a held down key is repeated
         repeat_rate = 40,
         -- how long in ms it takes for it to start repeating
