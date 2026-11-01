@@ -3,6 +3,7 @@ hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 
 local terminal    = "alacritty"
 local fileManager = "dolphin"
+local launcher    = "rofi -show drun"
 
 -- this ghost monitor keeps appearing. disabling it.
 hl.monitor({ output = "WAYLAND-1", disabled = true })
@@ -11,6 +12,8 @@ hl.monitor({ output = "WAYLAND-1", disabled = true })
 hl.bind("SUPER + X", hl.dsp.window.close())
 -- open new terminal
 hl.bind("SUPER + Return", hl.dsp.exec_cmd(terminal))
+-- open app launcher
+hl.bind("SUPER + L", hl.dsp.exec_cmd(launcher))
 
 -- vim-like motion to move between windows
 hl.bind("SUPER + h", hl.dsp.focus({ direction = "left" }))
