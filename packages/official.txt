@@ -25,6 +25,7 @@ git
 github-cli
 grub
 hyprland
+hyprpaper
 jq
 kwalletmanager
 lazydocker

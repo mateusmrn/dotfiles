@@ -8,12 +8,17 @@ local launcher    = "rofi -show drun"
 -- this ghost monitor keeps appearing. disabling it.
 hl.monitor({ output = "WAYLAND-1", disabled = true })
 
+-- autostart
+hl.on("hyprland.start", function()
+    hl.exec_cmd("unset HL_INITIAL_WORKSPACE_TOKEN; hyprpaper")
+end)
+
 -- kill current window
 hl.bind("SUPER + X", hl.dsp.window.close())
 -- open new terminal
 hl.bind("SUPER + Return", hl.dsp.exec_cmd(terminal))
 -- open app launcher
-hl.bind("SUPER + L", hl.dsp.exec_cmd(launcher))
+hl.bind("SUPER + SPACE", hl.dsp.exec_cmd(launcher))
 
 -- vim-like motion to move between windows
 hl.bind("SUPER + h", hl.dsp.focus({ direction = "left" }))
@@ -62,5 +67,8 @@ hl.config({
         repeat_rate = 40,
         -- how long in ms it takes for it to start repeating
         repeat_delay = 200,
+    },
+    decoration = {
+        rounding = 20,
     },
 })
