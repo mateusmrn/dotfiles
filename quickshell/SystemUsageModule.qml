@@ -14,9 +14,9 @@ Rectangle {
     Image {
         id: icon
         anchors.centerIn: parent
-        width: 14
-        height: 14
-        sourceSize: Qt.size(14, 14)
+        width: 16
+        height: 16
+        sourceSize: Qt.size(16, 16)
         source: "icons/system-usage.svg"
     }
 

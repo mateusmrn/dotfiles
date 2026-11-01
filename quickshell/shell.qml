@@ -50,14 +50,14 @@ ShellRoot {
                 KeyboardLayoutModule {
                     id: keyboardModule
                     anchors.right: volumeModule.left
-                    anchors.rightMargin: 12
+                    anchors.rightMargin: 10
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 BluetoothModule {
                     id: bluetoothModule
                     anchors.right: keyboardModule.left
-                    anchors.rightMargin: 2
+                    anchors.rightMargin: 10
                     anchors.verticalCenter: parent.verticalCenter
                     active: panel.bluetoothPopupOpen
                     onClicked: panel.bluetoothPopupOpen = !panel.bluetoothPopupOpen
@@ -66,7 +66,7 @@ ShellRoot {
                 SystemUsageModule {
                     id: systemUsageModule
                     anchors.right: bluetoothModule.left
-                    anchors.rightMargin: 2
+                    anchors.rightMargin: 10
                     anchors.verticalCenter: parent.verticalCenter
                     active: panel.systemUsagePopupOpen
                     onClicked: panel.systemUsagePopupOpen = !panel.systemUsagePopupOpen
