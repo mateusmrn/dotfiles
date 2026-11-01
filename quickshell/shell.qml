@@ -166,14 +166,15 @@ ShellRoot {
                 id: volumePopup
                 visible: panel.volumePopupOpen
                 property bool outputListOpen: false
-                onVisibleChanged: if (!visible) outputListOpen = false
+                property bool inputListOpen: false
+                onVisibleChanged: if (!visible) { outputListOpen = false; inputListOpen = false; }
 
                 color: "transparent"
                 implicitWidth: 236
                 implicitHeight: volumeColumn.implicitHeight + 24
 
                 PwObjectTracker {
-                    objects: Pipewire.nodes.values.filter(n => n.audio && n.isSink && !n.isStream)
+                    objects: Pipewire.nodes.values.filter(n => n.audio && (n.isSink || (n.type & PwNodeType.Source) !== 0) && !n.isStream)
                 }
 
                 anchor {
@@ -393,6 +394,102 @@ ShellRoot {
                                         onTapped: {
                                             Pipewire.preferredDefaultAudioSink = modelData;
                                             volumePopup.outputListOpen = false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            Layout.fillWidth: true
+                            implicitHeight: inputRow.implicitHeight + 10
+                            radius: 8
+                            color: inputHover.hovered ? "#16324a" : "transparent"
+
+                            RowLayout {
+                                id: inputRow
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.leftMargin: 4
+                                anchors.rightMargin: 4
+                                spacing: 8
+
+                                Image {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    width: 15
+                                    height: 15
+                                    sourceSize: Qt.size(15, 15)
+                                    source: "icons/mic.svg"
+                                }
+
+                                Text {
+                                    Layout.fillWidth: true
+                                    Layout.alignment: Qt.AlignVCenter
+                                    font.family: "Anthropic Mono Web"
+                                    font.pixelSize: 12
+                                    color: "#eaf4fa"
+                                    elide: Text.ElideRight
+
+                                    property var source: Pipewire.defaultAudioSource
+                                    text: (source && source.ready) ? (source.description || source.nickname || source.name) : "--"
+                                }
+
+                                Text {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    font.pixelSize: 11
+                                    color: "#6f93a8"
+                                    text: volumePopup.inputListOpen ? "▲" : "▼"
+                                }
+                            }
+
+                            HoverHandler {
+                                id: inputHover
+                            }
+
+                            TapHandler {
+                                onTapped: volumePopup.inputListOpen = !volumePopup.inputListOpen
+                            }
+                        }
+
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            visible: volumePopup.inputListOpen
+                            spacing: 2
+
+                            Repeater {
+                                model: Pipewire.nodes.values.filter(n => n.audio && (n.type & PwNodeType.Source) !== 0 && !n.isStream)
+
+                                Rectangle {
+                                    required property var modelData
+
+                                    Layout.fillWidth: true
+                                    implicitHeight: inputLabel.implicitHeight + 10
+                                    radius: 7
+                                    color: inputItemHover.hovered ? "#16324a" : "transparent"
+
+                                    Text {
+                                        id: inputLabel
+                                        anchors.left: parent.left
+                                        anchors.right: parent.right
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.leftMargin: 8
+                                        anchors.rightMargin: 8
+                                        font.family: "Anthropic Mono Web"
+                                        font.pixelSize: 12
+                                        elide: Text.ElideRight
+                                        color: (Pipewire.defaultAudioSource === modelData) ? "#19b6ee" : "#eaf4fa"
+                                        text: modelData.description || modelData.nickname || modelData.name
+                                    }
+
+                                    HoverHandler {
+                                        id: inputItemHover
+                                    }
+
+                                    TapHandler {
+                                        onTapped: {
+                                            Pipewire.preferredDefaultAudioSource = modelData;
+                                            volumePopup.inputListOpen = false;
                                         }
                                     }
                                 }
