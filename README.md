@@ -72,7 +72,9 @@ end
 52. `sudo ln -s ~/dotfiles/hypr/hyprpaper.conf ~/.config/hypr/hyprpaper.conf`
 53. `ln -s ~/dotfiles/quickshell ~/.config/quickshell`
 54. `ln -s ~/dotfiles/nvim ~/.config/nvim`
-55. Reboot
+55. `mkdir ~/.config/rofi`
+56. `ln -s ~/dotfiles/rofi/config.rasi ~/.config/rofi/config.rasi`
+57. Reboot
 
 ## Wishlist
 
