@@ -8,10 +8,11 @@ PanelWindow {
     id: root
 
     property var dockApps: [
-        { key: "1", class: "Alacritty", icon: "icons/terminal.svg" },
-        { key: "2", class: "firefox",   icon: "icons/globe.svg" },
-        { key: "3", class: "Code",      icon: "icons/file-code.svg" },
-        { key: "4", class: "Spotify",   icon: "icons/spotify.svg" }
+        { key: "1", class: "Alacritty",            icon: "icons/terminal.svg" },
+        { key: "2", class: "firefox",              icon: "icons/globe.svg" },
+        { key: "3", class: "Code",                 icon: "icons/file-code.svg" },
+        { key: "4", class: "Spotify",              icon: "icons/spotify.svg" },
+        { key: "5", class: "md.obsidian.Obsidian", icon: "icons/obsidian.svg" }
     ]
 
     function isRunning(className) {

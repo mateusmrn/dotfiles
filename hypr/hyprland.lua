@@ -91,10 +91,11 @@ hl.bind("SUPER + SHIFT + R", hl.dsp.exec_cmd(recordScript .. " full"))
 -- dock mode submap: focus/launch/cycle pinned apps by number
 local dockScript = "/home/mateus/dotfiles/hypr/scripts/dock-app.sh"
 local dockApps = {
-    { key = "1", class = "Alacritty", exec = terminal },
-    { key = "2", class = "firefox",   exec = "firefox" },
-    { key = "3", class = "Code",      exec = "code" },
-    { key = "4", class = "Spotify",   exec = "spotify" },
+    { key = "1", class = "Alacritty",            exec = terminal },
+    { key = "2", class = "firefox",              exec = "firefox" },
+    { key = "3", class = "Code",                 exec = "code" },
+    { key = "4", class = "Spotify",              exec = "spotify" },
+    { key = "5", class = "md.obsidian.Obsidian", exec = "obsidian" },
 }
 
 hl.bind("SUPER + D", hl.dsp.submap("dock"))
