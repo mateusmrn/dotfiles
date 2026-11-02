@@ -12,6 +12,7 @@ ShellRoot {
             property bool bluetoothPopupOpen: false
             property bool systemUsagePopupOpen: false
             property bool networkPopupOpen: false
+            property bool spotifyPopupOpen: false
 
             screen: modelData
             color: "transparent"
@@ -83,6 +84,16 @@ ShellRoot {
                     onClicked: panel.networkPopupOpen = !panel.networkPopupOpen
                 }
 
+                SpotifyModule {
+                    id: spotifyModule
+                    anchors.right: networkModule.left
+                    anchors.rightMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                    active: panel.spotifyPopupOpen
+                    running: spotifyPopup.running
+                    onClicked: panel.spotifyPopupOpen = !panel.spotifyPopupOpen
+                }
+
                 ClockWidget {
                     anchors.centerIn: parent
                 }
@@ -116,14 +127,22 @@ ShellRoot {
                 anchorItem: networkModule
             }
 
+            SpotifyPopup {
+                id: spotifyPopup
+                visible: panel.spotifyPopupOpen
+                panelWindow: panel
+                anchorItem: spotifyModule
+            }
+
             Scrim {
                 screen: panel.screen
-                active: panel.volumePopupOpen || panel.bluetoothPopupOpen || panel.systemUsagePopupOpen || panel.networkPopupOpen
+                active: panel.volumePopupOpen || panel.bluetoothPopupOpen || panel.systemUsagePopupOpen || panel.networkPopupOpen || panel.spotifyPopupOpen
                 onDismissed: {
                     panel.volumePopupOpen = false;
                     panel.bluetoothPopupOpen = false;
                     panel.systemUsagePopupOpen = false;
                     panel.networkPopupOpen = false;
+                    panel.spotifyPopupOpen = false;
                 }
             }
         }
