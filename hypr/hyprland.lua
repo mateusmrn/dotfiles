@@ -56,9 +56,9 @@ for i = 1, 9 do
     hl.bind("SUPER + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
 end
 
--- cycle through workspaces
-hl.bind("SUPER + TAB",         hl.dsp.focus({ workspace = "+1" }))
-hl.bind("SUPER + SHIFT + TAB", hl.dsp.focus({ workspace = "-1" }))
+-- cycle through active (non-empty) workspaces, wrapping around
+hl.bind("SUPER + TAB",         hl.dsp.focus({ workspace = "e+1" }))
+hl.bind("SUPER + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
 
 -- toggle fullscreen for current window
 hl.bind("SUPER + F", hl.dsp.window.fullscreen())
