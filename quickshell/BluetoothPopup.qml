@@ -143,6 +143,15 @@ PopupWindow {
 
                             Text {
                                 Layout.alignment: Qt.AlignVCenter
+                                visible: modelData.connected && modelData.batteryAvailable
+                                font.family: "Anthropic Mono Web"
+                                font.pixelSize: 11
+                                color: "#6f93a8"
+                                text: Math.round(modelData.battery * 100) + "%"
+                            }
+
+                            Text {
+                                Layout.alignment: Qt.AlignVCenter
                                 visible: modelData.connected
                                 font.pixelSize: 15
                                 color: "#19b6ee"
