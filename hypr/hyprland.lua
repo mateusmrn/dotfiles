@@ -73,15 +73,20 @@ hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 -- Anki always opens floating
 hl.window_rule({ match = { class = "Anki" }, float = true })
 
--- resize mode submap
-hl.bind("SUPER + R", hl.dsp.submap("resize"))
-hl.define_submap("resize", function()
-    hl.bind("l", hl.dsp.window.resize({ x = 10,  y = 0,   relative = true }), { repeating = true })
-    hl.bind("j", hl.dsp.window.resize({ x = 0,   y = 10,  relative = true }), { repeating = true })
-    hl.bind("k", hl.dsp.window.resize({ x = 0,   y = -10, relative = true }), { repeating = true })
-    hl.bind("h", hl.dsp.window.resize({ x = -10, y = 0,   relative = true }), { repeating = true })
-    hl.bind("escape", hl.dsp.submap("reset"))
-end)
+-- screen recording (toggle: press again to stop and finalize)
+local recordScript = "/home/mateus/dotfiles/hypr/scripts/toggle-recording.sh"
+hl.bind("SUPER + R",         hl.dsp.exec_cmd(recordScript .. " region"))
+hl.bind("SUPER + SHIFT + R", hl.dsp.exec_cmd(recordScript .. " full"))
+
+-- resize mode submap (disabled for now: SUPER + R repurposed for screen recording)
+-- hl.bind("SUPER + R", hl.dsp.submap("resize"))
+-- hl.define_submap("resize", function()
+--     hl.bind("l", hl.dsp.window.resize({ x = 10,  y = 0,   relative = true }), { repeating = true })
+--     hl.bind("j", hl.dsp.window.resize({ x = 0,   y = 10,  relative = true }), { repeating = true })
+--     hl.bind("k", hl.dsp.window.resize({ x = 0,   y = -10, relative = true }), { repeating = true })
+--     hl.bind("h", hl.dsp.window.resize({ x = -10, y = 0,   relative = true }), { repeating = true })
+--     hl.bind("escape", hl.dsp.submap("reset"))
+-- end)
 
 -- dock mode submap: focus/launch/cycle pinned apps by number
 local dockScript = "/home/mateus/dotfiles/hypr/scripts/dock-app.sh"

@@ -94,6 +94,12 @@ ShellRoot {
                     onClicked: panel.spotifyPopupOpen = !panel.spotifyPopupOpen
                 }
 
+                RecordingIndicator {
+                    anchors.right: spotifyModule.left
+                    anchors.rightMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
                 ClockWidget {
                     anchors.centerIn: parent
                 }
