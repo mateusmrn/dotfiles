@@ -11,6 +11,7 @@ ShellRoot {
             property bool volumePopupOpen: false
             property bool bluetoothPopupOpen: false
             property bool systemUsagePopupOpen: false
+            property bool networkPopupOpen: false
 
             screen: modelData
             color: "transparent"
@@ -72,6 +73,16 @@ ShellRoot {
                     onClicked: panel.systemUsagePopupOpen = !panel.systemUsagePopupOpen
                 }
 
+                NetworkModule {
+                    id: networkModule
+                    anchors.right: systemUsageModule.left
+                    anchors.rightMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                    active: panel.networkPopupOpen
+                    connectionType: networkPopup.connectionType
+                    onClicked: panel.networkPopupOpen = !panel.networkPopupOpen
+                }
+
                 ClockWidget {
                     anchors.centerIn: parent
                 }
@@ -98,13 +109,21 @@ ShellRoot {
                 anchorItem: systemUsageModule
             }
 
+            NetworkPopup {
+                id: networkPopup
+                visible: panel.networkPopupOpen
+                panelWindow: panel
+                anchorItem: networkModule
+            }
+
             Scrim {
                 screen: panel.screen
-                active: panel.volumePopupOpen || panel.bluetoothPopupOpen || panel.systemUsagePopupOpen
+                active: panel.volumePopupOpen || panel.bluetoothPopupOpen || panel.systemUsagePopupOpen || panel.networkPopupOpen
                 onDismissed: {
                     panel.volumePopupOpen = false;
                     panel.bluetoothPopupOpen = false;
                     panel.systemUsagePopupOpen = false;
+                    panel.networkPopupOpen = false;
                 }
             }
         }
