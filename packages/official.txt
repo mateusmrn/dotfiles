@@ -84,6 +84,7 @@ vlc-plugin-ffmpeg
 vlc-plugin-freetype
 vlc-plugin-srt
 waybar
+wf-recorder
 whisper-cpp
 wl-clipboard
 yt-dlp
