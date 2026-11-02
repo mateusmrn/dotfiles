@@ -1,0 +1,88 @@
+configuration {
+    modi: "drun,run";
+    show-icons: true;
+    font: "Anthropic Mono Web 12";
+}
+
+* {
+    bg:          #0a1f2ee0;
+    surface:     #11293ce0;
+    surface-alt: #16324aff;
+    border:      #5ec1eb29;
+    cyan:        #19b6eeff;
+    yellow:      #ffd23fff;
+    text:        #eaf4faff;
+    text-muted:  #6f93a8ff;
+
+    background-color: transparent;
+    text-color: @text;
+}
+
+window {
+    location: center;
+    width: 600px;
+    background-color: @surface;
+    border: 1px;
+    border-color: @border;
+    border-radius: 15px;
+    padding: 12px;
+}
+
+mainbox {
+    background-color: transparent;
+    children: [ "inputbar", "listview" ];
+    spacing: 10px;
+}
+
+inputbar {
+    background-color: @surface-alt;
+    border-radius: 9px;
+    padding: 10px 12px;
+    children: [ "prompt", "entry" ];
+    spacing: 8px;
+}
+
+prompt {
+    background-color: transparent;
+    text-color: @cyan;
+}
+
+entry {
+    background-color: transparent;
+    text-color: @text;
+    placeholder: "Search…";
+    placeholder-color: @text-muted;
+}
+
+listview {
+    background-color: transparent;
+    lines: 8;
+    spacing: 2px;
+    cycle: true;
+    dynamic: true;
+    scrollbar: false;
+}
+
+element {
+    background-color: transparent;
+    text-color: @text-muted;
+    border-radius: 9px;
+    padding: 8px 10px;
+    spacing: 10px;
+}
+
+element selected {
+    background-color: @cyan;
+    text-color: #06202cff;
+}
+
+element-icon {
+    size: 20px;
+    background-color: transparent;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
