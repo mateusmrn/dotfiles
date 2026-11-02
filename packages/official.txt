@@ -23,6 +23,7 @@ flatpak
 gd
 git
 github-cli
+grim
 grub
 hyprland
 hyprpaper
@@ -61,8 +62,10 @@ re2c
 reflector
 rofi
 sddm
+slurp
 spectacle
 sudo
+swappy
 swayimg
 tex-gyre-fonts
 tmux
@@ -81,6 +84,7 @@ vlc-plugin-freetype
 vlc-plugin-srt
 waybar
 whisper-cpp
+wl-clipboard
 yt-dlp
 zip
 zoxide
