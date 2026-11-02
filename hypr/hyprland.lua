@@ -60,8 +60,11 @@ end
 hl.bind("SUPER + TAB",         hl.dsp.focus({ workspace = "e+1" }))
 hl.bind("SUPER + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
 
--- toggle fullscreen for current window
-hl.bind("SUPER + F", hl.dsp.window.fullscreen())
+-- toggle maximize (fills the workspace, app isn't told it's fullscreen)
+hl.bind("SUPER + F", hl.dsp.window.fullscreen_state({ action = "toggle", internal = 1, client = 0 }))
+
+-- toggle real fullscreen for current window
+hl.bind("SUPER + SHIFT + F", hl.dsp.window.fullscreen())
 
 -- toggle floating for current window
 hl.bind("SUPER + V", hl.dsp.window.float({ action = "toggle" }))
