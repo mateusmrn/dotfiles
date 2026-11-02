@@ -65,6 +65,23 @@ hl.define_submap("resize", function()
     hl.bind("escape", hl.dsp.submap("reset"))
 end)
 
+-- dock mode submap: focus/launch/cycle pinned apps by number
+local dockScript = "/home/mateus/dotfiles/hypr/scripts/dock-app.sh"
+local dockApps = {
+    { key = "1", class = "Alacritty", exec = terminal },
+    { key = "2", class = "firefox",   exec = "firefox" },
+    { key = "3", class = "Code",      exec = "code" },
+    { key = "4", class = "Spotify",   exec = "spotify" },
+}
+
+hl.bind("SUPER + D", hl.dsp.submap("dock"))
+hl.define_submap("dock", function()
+    for _, app in ipairs(dockApps) do
+        hl.bind(app.key, hl.dsp.exec_cmd(dockScript .. " '" .. app.class .. "' '" .. app.exec .. "'"))
+    end
+    hl.bind("escape", hl.dsp.submap("reset"))
+end)
+
 hl.config({
     general = {
         col = {

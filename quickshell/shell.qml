@@ -145,6 +145,10 @@ ShellRoot {
                     panel.spotifyPopupOpen = false;
                 }
             }
+
+            DockPopup {
+                screen: panel.screen
+            }
         }
     }
 }
