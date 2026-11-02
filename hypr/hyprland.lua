@@ -63,6 +63,16 @@ hl.bind("SUPER + SHIFT + TAB", hl.dsp.focus({ workspace = "-1" }))
 -- toggle fullscreen for current window
 hl.bind("SUPER + F", hl.dsp.window.fullscreen())
 
+-- toggle floating for current window
+hl.bind("SUPER + V", hl.dsp.window.float({ action = "toggle" }))
+
+-- drag/resize floating windows with the mouse
+hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
+hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
+
+-- Anki always opens floating
+hl.window_rule({ match = { class = "Anki" }, float = true })
+
 -- resize mode submap
 hl.bind("SUPER + R", hl.dsp.submap("resize"))
 hl.define_submap("resize", function()
