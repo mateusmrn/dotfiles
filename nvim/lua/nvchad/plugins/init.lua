@@ -57,6 +57,7 @@ return {
 
   {
     "folke/which-key.nvim",
+    enabled = false, -- disabled for now
     keys = { "<leader>", "<c-w>", '"', "'", "`", "c", "v", "g" },
     cmd = "WhichKey",
     opts = function()
