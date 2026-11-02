@@ -24,6 +24,8 @@ flatpak
 gd
 git
 github-cli
+greetd
+greetd-tuigreet
 grim
 grub
 hyprland
