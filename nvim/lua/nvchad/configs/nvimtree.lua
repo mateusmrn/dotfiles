@@ -1,6 +1,21 @@
 dofile(vim.g.base46_cache .. "nvimtree")
 
+local function on_attach(bufnr)
+  local api = require "nvim-tree.api"
+  api.config.mappings.default_on_attach(bufnr)
+
+  -- make "l" behave like Enter (open file / expand folder)
+  vim.keymap.set("n", "l", api.node.open.edit, {
+    desc = "nvim-tree: open",
+    buffer = bufnr,
+    noremap = true,
+    silent = true,
+    nowait = true,
+  })
+end
+
 return {
+  on_attach = on_attach,
   filters = { dotfiles = false },
   disable_netrw = true,
   hijack_cursor = true,
