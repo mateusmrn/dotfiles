@@ -17,6 +17,7 @@ docker-compose
 docx2txt
 dolphin
 efibootmgr
+fastfetch
 firefox
 fish
 flatpak
