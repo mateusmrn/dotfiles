@@ -26,6 +26,14 @@ hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.0 @DEFAUL
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
 hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
 
+-- screenshots
+-- region select, then annotate/crop/blur before saving or copying
+hl.bind("Print",         hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | swappy -f -"))
+hl.bind("SUPER + P",     hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | swappy -f -"))
+-- full screen, straight to clipboard
+hl.bind("SHIFT + Print",        hl.dsp.exec_cmd("grim - | wl-copy"))
+hl.bind("SHIFT + SUPER + P",    hl.dsp.exec_cmd("grim - | wl-copy"))
+
 -- vim-like motion to move between windows
 hl.bind("SUPER + h", hl.dsp.focus({ direction = "left" }))
 hl.bind("SUPER + l", hl.dsp.focus({ direction = "right" }))
