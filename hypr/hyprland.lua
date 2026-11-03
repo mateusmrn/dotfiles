@@ -111,6 +111,20 @@ hl.define_submap("dock", function()
     hl.bind("escape", hl.dsp.submap("reset"))
 end)
 
+-- layout mode submap: switch the active layout by number
+local layouts = {
+    { key = "1", name = "dwindle" },
+    { key = "2", name = "master" },
+}
+
+hl.bind("SUPER + M", hl.dsp.submap("layout"))
+hl.define_submap("layout", function()
+    for _, l in ipairs(layouts) do
+        hl.bind(l.key, hl.dsp.exec_cmd("hyprctl keyword general:layout " .. l.name))
+    end
+    hl.bind("escape", hl.dsp.submap("reset"))
+end)
+
 hl.config({
     general = {
         col = {
