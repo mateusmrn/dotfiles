@@ -59,6 +59,8 @@ end
 -- cycle through active (non-empty) workspaces, wrapping around
 hl.bind("SUPER + TAB",         hl.dsp.focus({ workspace = "e+1" }))
 hl.bind("SUPER + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
+hl.bind("SUPER + N",           hl.dsp.focus({ workspace = "e+1" }))
+hl.bind("SUPER + SHIFT + N",   hl.dsp.focus({ workspace = "e-1" }))
 
 -- toggle maximize (fills the workspace, app isn't told it's fullscreen)
 hl.bind("SUPER + F", hl.dsp.window.fullscreen_state({ action = "toggle", internal = 1, client = 0 }))
