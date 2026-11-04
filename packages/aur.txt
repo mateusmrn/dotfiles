@@ -8,7 +8,6 @@ insomnia
 mongosh-bin
 ngrok
 nixd
-nixd-debug
 nixfmt-bin
 slack-desktop
 spotify
