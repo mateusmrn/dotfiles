@@ -7,7 +7,7 @@ vim.lsp.config("ruff", {
   end,
 })
 
-local servers = { "html", "cssls", "pyright", "ruff" }
+local servers = { "html", "cssls", "pyright", "ruff", "nixd" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers
