@@ -7,7 +7,6 @@ blender
 bluedevil
 bluez
 bluez-utils
-boost
 calibre
 cmake
 cronie
@@ -38,12 +37,9 @@ less
 linux
 linux-firmware
 man-db
-meson
 mise
 neovim
 networkmanager
-nix
-nlohmann-json
 noto-fonts-cjk
 nvidia-open
 nvtop
