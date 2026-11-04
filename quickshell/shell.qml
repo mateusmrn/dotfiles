@@ -35,8 +35,15 @@ ShellRoot {
                 border.color: "#295ec1eb"
 
                 Workspaces {
+                    id: workspaces
                     anchors.left: parent.left
                     anchors.leftMargin: 18
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                FullscreenIndicator {
+                    anchors.left: workspaces.right
+                    anchors.leftMargin: 12
                     anchors.verticalCenter: parent.verticalCenter
                 }
 

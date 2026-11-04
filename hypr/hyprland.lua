@@ -78,6 +78,14 @@ hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 -- Anki always opens floating
 hl.window_rule({ match = { class = "Anki" }, float = true })
 
+-- distinct border while maximized (SUPER + F): it otherwise looks identical
+-- to a large tiled window, so this makes the state visible on the window itself
+hl.window_rule({
+    name  = "maximize-border",
+    match = { fullscreen_state_internal = 1 },
+    border_color = "rgba(f5a623ee)",
+})
+
 -- screen recording (toggle: press again to stop and finalize)
 local recordScript = "/home/mateus/dotfiles/hypr/scripts/toggle-recording.sh"
 hl.bind("SUPER + R",         hl.dsp.exec_cmd(recordScript .. " region"))
