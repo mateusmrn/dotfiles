@@ -16,6 +16,7 @@ docker
 docker-compose
 docx2txt
 dolphin
+drawio-desktop
 efibootmgr
 fastfetch
 firefox
