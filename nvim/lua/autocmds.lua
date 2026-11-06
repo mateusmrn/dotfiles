@@ -1,5 +1,14 @@
 require "nvchad.autocmds"
 
+-- `autoread` only takes effect when something tells Neovim to check the file,
+-- so poll for external changes (e.g. Claude Code editing an open buffer) on
+-- the events most likely to catch it: switching focus/buffers or sitting idle
+-- (updatetime, set by NvChad, is 250ms).
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  pattern = "*",
+  command = "if mode() != 'c' | checktime | endif",
+})
+
 -- nvim-treesitter's `master` branch (which NvChad still depends on) is
 -- incompatible with Neovim 0.12+ for markdown fenced code blocks, crashing
 -- the highlighter (https://github.com/nvim-treesitter/nvim-treesitter/issues/8618).
