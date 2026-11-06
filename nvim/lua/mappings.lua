@@ -21,4 +21,6 @@ map("n", "[d", function()
   vim.diagnostic.jump { count = -1 }
 end, { desc = "Previous diagnostic" })
 
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP code action" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
