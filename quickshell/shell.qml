@@ -102,7 +102,14 @@ ShellRoot {
                 }
 
                 RecordingIndicator {
+                    id: recordingIndicator
                     anchors.right: spotifyModule.left
+                    anchors.rightMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                StopwatchModule {
+                    anchors.right: recordingIndicator.left
                     anchors.rightMargin: 10
                     anchors.verticalCenter: parent.verticalCenter
                 }

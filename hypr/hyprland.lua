@@ -91,6 +91,12 @@ local recordScript = "/home/mateus/dotfiles/hypr/scripts/toggle-recording.sh"
 hl.bind("SUPER + R",         hl.dsp.exec_cmd(recordScript .. " region"))
 hl.bind("SUPER + SHIFT + R", hl.dsp.exec_cmd(recordScript .. " full"))
 
+-- stopwatch (quickshell statusbar module, driven over its IPC target)
+-- toggle: starts a fresh stopwatch if idle, otherwise pauses/resumes it
+-- kill:   cancels and resets it entirely
+hl.bind("SUPER + S",         hl.dsp.exec_cmd("qs ipc call stopwatch toggle"))
+hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("qs ipc call stopwatch kill"))
+
 -- resize mode submap (disabled for now: SUPER + R repurposed for screen recording)
 -- hl.bind("SUPER + R", hl.dsp.submap("resize"))
 -- hl.define_submap("resize", function()
