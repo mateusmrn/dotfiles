@@ -1,6 +1,8 @@
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
+    c = { "clang_format" },
+    cpp = { "clang_format" },
     python = { "ruff_format" },
     nix = { "nixfmt" },
     javascript = { "prettier" },
