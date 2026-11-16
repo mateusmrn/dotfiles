@@ -78,6 +78,9 @@ hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 -- Anki always opens floating
 hl.window_rule({ match = { class = "Anki" }, float = true })
 
+-- BlueDevil's Bluetooth settings (kcmshell6 kcm_bluetooth) always opens floating
+hl.window_rule({ match = { class = "kcm_bluetooth" }, float = true })
+
 -- distinct border while maximized (SUPER + F): it otherwise looks identical
 -- to a large tiled window, so this makes the state visible on the window itself
 hl.window_rule({

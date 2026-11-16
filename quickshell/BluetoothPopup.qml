@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Io
 import Quickshell.Bluetooth
 
 PopupWindow {
@@ -169,6 +170,42 @@ PopupWindow {
                     }
                 }
             }
+
+            Rectangle {
+                Layout.fillWidth: true
+                implicitHeight: 1
+                color: "#295ec1eb"
+            }
+
+            Rectangle {
+                id: manageDevicesButton
+                Layout.fillWidth: true
+                implicitHeight: manageDevicesLabel.implicitHeight + 10
+                radius: 7
+                color: manageDevicesHover.hovered ? "#16324a" : "transparent"
+
+                Text {
+                    id: manageDevicesLabel
+                    anchors.centerIn: parent
+                    font.family: "Anthropic Mono Web"
+                    font.pixelSize: 12
+                    color: "#19b6ee"
+                    text: "Manage devices"
+                }
+
+                HoverHandler {
+                    id: manageDevicesHover
+                }
+
+                TapHandler {
+                    onTapped: manageDevicesProc.running = true
+                }
+            }
         }
+    }
+
+    Process {
+        id: manageDevicesProc
+        command: ["kcmshell6", "kcm_bluetooth"]
     }
 }
