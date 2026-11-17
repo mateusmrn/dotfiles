@@ -70,17 +70,18 @@ end
 50. `mkdir ~/.config/hypr`
 51. `sudo ln -s ~/dotfiles/hypr/hyprland.lua ~/.config/hypr/hyprland.lua`
 52. `sudo ln -s ~/dotfiles/hypr/hyprpaper.conf ~/.config/hypr/hyprpaper.conf`
-53. `ln -s ~/dotfiles/quickshell ~/.config/quickshell`
-54. `ln -s ~/dotfiles/nvim ~/.config/nvim`
-55. `mkdir ~/.config/rofi`
-56. `ln -s ~/dotfiles/rofi/config.rasi ~/.config/rofi/config.rasi`
-57. `sudo ln -s ~/dotfiles/greetd/config.toml /etc/greetd/config.toml`
-58. `sudo mkdir -p /etc/systemd/system/greetd.service.d`
-59. `sudo ln -s ~/dotfiles/greetd/greetd.service.d/override.conf /etc/systemd/system/greetd.service.d/override.conf`
-60. `sudo systemctl daemon-reload`
-61. `sudo systemctl disable sddm.service`
-62. `sudo systemctl enable greetd.service`
-63. Reboot
+53. `ln -s ~/dotfiles/hypr/hyprlock.conf ~/.config/hypr/hyprlock.conf`
+54. `ln -s ~/dotfiles/quickshell ~/.config/quickshell`
+55. `ln -s ~/dotfiles/nvim ~/.config/nvim`
+56. `mkdir ~/.config/rofi`
+57. `ln -s ~/dotfiles/rofi/config.rasi ~/.config/rofi/config.rasi`
+58. `sudo ln -s ~/dotfiles/greetd/config.toml /etc/greetd/config.toml`
+59. `sudo mkdir -p /etc/systemd/system/greetd.service.d`
+60. `sudo ln -s ~/dotfiles/greetd/greetd.service.d/override.conf /etc/systemd/system/greetd.service.d/override.conf`
+61. `sudo systemctl daemon-reload`
+62. `sudo systemctl disable sddm.service`
+63. `sudo systemctl enable greetd.service`
+64. Reboot
 
 ## Wishlist
 

@@ -21,6 +21,9 @@ hl.bind("SUPER + Return", hl.dsp.exec_cmd(terminal))
 -- open app launcher
 hl.bind("SUPER + SPACE", hl.dsp.exec_cmd(launcher))
 
+-- lock screen
+hl.bind("SUPER + SHIFT + L", hl.dsp.exec_cmd("hyprlock"))
+
 -- volume controls
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"))
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
