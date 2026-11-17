@@ -30,6 +30,7 @@ greetd-tuigreet
 grim
 grub
 hyprland
+hyprlock
 hyprpaper
 jq
 kwalletmanager
