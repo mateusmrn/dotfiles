@@ -38,6 +38,7 @@ lazydocker
 less
 linux
 linux-firmware
+linux-headers
 man-db
 mise
 neovim
