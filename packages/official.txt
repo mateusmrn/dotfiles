@@ -83,6 +83,8 @@ ttf-iosevka-nerd
 ttf-jetbrains-mono-nerd
 unzip
 uv
+virtualbox
+virtualbox-host-dkms
 vlc
 vlc-plugin-ffmpeg
 vlc-plugin-freetype
