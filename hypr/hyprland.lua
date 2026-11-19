@@ -16,6 +16,8 @@ end)
 
 -- kill current window
 hl.bind("SUPER + X", hl.dsp.window.close())
+-- force-kill frozen window
+hl.bind("SUPER + SHIFT + X", hl.dsp.window.kill())
 -- open new terminal
 hl.bind("SUPER + Return", hl.dsp.exec_cmd(terminal))
 -- open app launcher
