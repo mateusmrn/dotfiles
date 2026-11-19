@@ -42,6 +42,7 @@ set -gx ANDROID_HOME /home/mateus/Android/Sdk
 
 fish_add_path $ANDROID_HOME/emulator
 fish_add_path $ANDROID_HOME/platform-tools
+fish_add_path $HOME/.local/bin
 
 # start X at login
 if status is-login
