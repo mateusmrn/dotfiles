@@ -12,6 +12,7 @@ cmake
 cronie
 cuda
 deno
+discord
 docker
 docker-compose
 docx2txt
