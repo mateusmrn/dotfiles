@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 USERNAME="mateus"
-HOST="vm"
+HOST="nixos"
 
 green() {
   printf '\033[0;32m%s\033[0m' "$1"
@@ -99,7 +99,9 @@ ln -sfn "/home/$USERNAME/dotfiles/nix" /mnt/etc/nixos
 FLAKE_PATH="$TARGET_DOTFILES_DIR/nix/flake.nix"
 HARDWARE_CONFIG_PATH="$TARGET_DOTFILES_DIR/nix/hardware-configuration.nix"
 
+flake_existed=false
 if [ -f "$FLAKE_PATH" ]; then
+  flake_existed=true
   echo "$(green "Found an existing flake config at") $(bold "nix/flake.nix")"
   echo
   cat "$FLAKE_PATH"
@@ -161,3 +163,15 @@ nixos-generate-config --flake --no-filesystems --root /mnt
 if [ "$reuse_hardware_config" = true ]; then
   mv "$HARDWARE_CONFIG_PATH.bak" "$HARDWARE_CONFIG_PATH"
 fi
+
+if [ "$flake_existed" = false ]; then
+  sed -i "s/nixosConfigurations\.nixos/nixosConfigurations.$HOST/" "$FLAKE_PATH"
+fi
+
+echo "$(bold "Staging dotfiles repo changes so the flake build picks them up...")"
+git -C "$TARGET_DOTFILES_DIR" add -A
+
+echo "$(bold "Running nixos-install...")"
+nixos-install --root /mnt --flake "$TARGET_DOTFILES_DIR/nix#$HOST"
+
+echo "$(green "NixOS installation complete!")"
