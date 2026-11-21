@@ -1,7 +1,3 @@
-#! /usr/bin/env nix-shell
-#! nix-shell -i bash --packages git
-#! nix-shell -I https://github.com/NixOS/nixpkgs/archive/nixos-26.05.tar.gz
-
 main() {
   set -e
   echo $(blue "$(bold "Testing Internet connection")")
