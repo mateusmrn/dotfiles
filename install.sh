@@ -2,6 +2,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+USERNAME="mateus"
+HOST="vm"
 
 green() {
   printf '\033[0;32m%s\033[0m' "$1"
@@ -79,7 +81,83 @@ select disko_choice in "Use as is" "Make changes"; do
 done
 
 echo "$(bold "Partitioning and formatting the disk...")"
-nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko "$DISKO_PATH"
+nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko -- --mode destroy,format,mount "$DISKO_PATH"
 
 echo "$(green "Done. Resulting disk layout:")"
 lsblk -f
+
+TARGET_DOTFILES_DIR="/mnt/home/$USERNAME/dotfiles"
+
+echo "$(bold "Copying dotfiles repo to") $(italic "$TARGET_DOTFILES_DIR")"
+mkdir -p "$(dirname "$TARGET_DOTFILES_DIR")"
+cp -a "$SCRIPT_DIR" "$TARGET_DOTFILES_DIR"
+
+echo "$(bold "Symlinking /etc/nixos to the dotfiles flake...")"
+mkdir -p /mnt/etc
+ln -sfn "/home/$USERNAME/dotfiles/nix" /mnt/etc/nixos
+
+FLAKE_PATH="$TARGET_DOTFILES_DIR/nix/flake.nix"
+HARDWARE_CONFIG_PATH="$TARGET_DOTFILES_DIR/nix/hardware-configuration.nix"
+
+if [ -f "$FLAKE_PATH" ]; then
+  echo "$(green "Found an existing flake config at") $(bold "nix/flake.nix")"
+  echo
+  cat "$FLAKE_PATH"
+  echo
+
+  echo "$(bold "Do you want to use this flake config as is, or make changes to it?")"
+  select flake_choice in "Use as is" "Make changes"; do
+    case "$flake_choice" in
+    "Use as is")
+      break
+      ;;
+    "Make changes")
+      "${EDITOR:-nano}" "$FLAKE_PATH"
+      break
+      ;;
+    *)
+      echo "$(red "Invalid choice, please try again.")"
+      ;;
+    esac
+  done
+else
+  echo "$(yellow "No existing flake config found; one will be generated automatically.")"
+fi
+
+reuse_hardware_config=false
+if [ -f "$HARDWARE_CONFIG_PATH" ]; then
+  echo "$(green "Found an existing hardware config at") $(bold "nix/hardware-configuration.nix")"
+  echo
+  cat "$HARDWARE_CONFIG_PATH"
+  echo
+
+  echo "$(bold "Do you want to reuse this hardware configuration?")"
+  select hardware_choice in "Yes" "No"; do
+    case "$hardware_choice" in
+    "Yes")
+      reuse_hardware_config=true
+      break
+      ;;
+    "No")
+      rm "$HARDWARE_CONFIG_PATH"
+      break
+      ;;
+    *)
+      echo "$(red "Invalid choice, please try again.")"
+      ;;
+    esac
+  done
+else
+  echo "$(yellow "No existing hardware config found; one will be generated automatically.")"
+fi
+
+if [ "$reuse_hardware_config" = true ]; then
+  cp "$HARDWARE_CONFIG_PATH" "$HARDWARE_CONFIG_PATH.bak"
+fi
+
+echo "$(bold "Generating NixOS flake configuration...")"
+nixos-generate-config --flake --no-filesystems --root /mnt
+
+if [ "$reuse_hardware_config" = true ]; then
+  mv "$HARDWARE_CONFIG_PATH.bak" "$HARDWARE_CONFIG_PATH"
+fi
