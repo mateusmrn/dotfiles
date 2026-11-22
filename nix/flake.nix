@@ -8,30 +8,40 @@
     };
   };
 
-  outputs = { self, nixpkgs, disko, ... }: {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./hardware-configuration.nix
-        disko.nixosModules.disko
-        ./disko.nix
+  outputs =
+    {
+      self,
+      nixpkgs,
+      disko,
+      ...
+    }:
+    {
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hardware-configuration.nix
+          disko.nixosModules.disko
+          ./disko.nix
 
-        {
-          nix.settings.experimental-features = [ "nix-command" "flakes" ];
+          {
+            nix.settings.experimental-features = [
+              "nix-command"
+              "flakes"
+            ];
 
-          networking.hostName = "nixos";
+            networking.hostName = "nixos";
 
-          boot.loader.systemd-boot.enable = true;
-          boot.loader.efi.canTouchEfiVariables = true;
+            boot.loader.systemd-boot.enable = true;
+            boot.loader.efi.canTouchEfiVariables = true;
 
-          users.users.mateus = {
-            isNormalUser = true;
-            extraGroups = [ "wheel" ];
-          };
+            users.users.mateus = {
+              isNormalUser = true;
+              extraGroups = [ "wheel" ];
+            };
 
-          system.stateVersion = "26.05";
-        }
-      ];
+            system.stateVersion = "26.05";
+          }
+        ];
+      };
     };
-  };
 }

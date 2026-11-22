@@ -94,7 +94,7 @@ cp -a "$SCRIPT_DIR" "$TARGET_DOTFILES_DIR"
 
 echo "$(bold "Symlinking /etc/nixos to the dotfiles flake...")"
 mkdir -p /mnt/etc
-ln -sfn "/home/$USERNAME/dotfiles/nix" /mnt/etc/nixos
+ln -sfn "../home/$USERNAME/dotfiles/nix" /mnt/etc/nixos
 
 FLAKE_PATH="$TARGET_DOTFILES_DIR/nix/flake.nix"
 HARDWARE_CONFIG_PATH="$TARGET_DOTFILES_DIR/nix/hardware-configuration.nix"
