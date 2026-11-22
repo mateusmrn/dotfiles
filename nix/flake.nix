@@ -56,9 +56,12 @@
 
               hardware.bluetooth.enable = true;
 
+              virtualisation.docker.enable = true;
+
               environment.systemPackages = [
                 pkgs.kdePackages.bluedevil
                 pkgs.kdePackages.kcmutils
+                pkgs.docker-compose
 
                 (pkgs.anki.withAddons [
                   pkgs.ankiAddons.anki-connect
@@ -85,7 +88,10 @@
 
               users.users.mateus = {
                 isNormalUser = true;
-                extraGroups = [ "wheel" ];
+                extraGroups = [
+                  "wheel"
+                  "docker"
+                ];
                 home = "/home/mateus";
                 shell = pkgs.fish;
                 packages = [ ];
