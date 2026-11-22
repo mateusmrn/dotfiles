@@ -175,3 +175,42 @@ echo "$(bold "Running nixos-install...")"
 nixos-install --root /mnt --flake "$TARGET_DOTFILES_DIR/nix#$HOST"
 
 echo "$(green "NixOS installation complete!")"
+
+echo "$(bold "Do you want to set up a branch to back up this machine's config after future changes?")"
+select backup_choice in "Yes" "No"; do
+  case "$backup_choice" in
+  "Yes" | "No")
+    break
+    ;;
+  *)
+    echo "$(red "Invalid choice, please try again.")"
+    ;;
+  esac
+done
+
+if [ "$backup_choice" = "Yes" ]; then
+  while true; do
+    read -rp "$(bold "Branch name [$HOST]: ")" backup_branch_1
+    backup_branch_1="${backup_branch_1:-$HOST}"
+    read -rp "$(bold "Confirm branch name: ")" backup_branch_2
+    backup_branch_2="${backup_branch_2:-$HOST}"
+
+    if [ "$backup_branch_1" = "$backup_branch_2" ]; then
+      backup_branch="$backup_branch_1"
+      break
+    fi
+
+    echo "$(red "Branch names did not match, please try again.")"
+  done
+
+  if git -C "$TARGET_DOTFILES_DIR" ls-remote --exit-code --heads origin "$backup_branch" >/dev/null 2>&1; then
+    echo "$(yellow "Branch '$backup_branch' already exists on the remote.")"
+    git -C "$TARGET_DOTFILES_DIR" fetch origin "$backup_branch"
+    git -C "$TARGET_DOTFILES_DIR" checkout "$backup_branch"
+  else
+    git -C "$TARGET_DOTFILES_DIR" checkout -b "$backup_branch"
+    git -C "$TARGET_DOTFILES_DIR" push -u origin "$backup_branch"
+  fi
+
+  echo "$(green "Config backups for this machine will be saved on branch") $(bold "$backup_branch")"
+fi
