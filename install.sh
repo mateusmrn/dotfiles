@@ -209,7 +209,7 @@ if [ "$backup_choice" = "Yes" ]; then
     git -C "$TARGET_DOTFILES_DIR" checkout "$backup_branch"
   else
     git -C "$TARGET_DOTFILES_DIR" checkout -b "$backup_branch"
-    git -C "$TARGET_DOTFILES_DIR" push -u origin "$backup_branch"
+    echo "$(yellow "Branch '$backup_branch' was created locally, but not pushed (no GitHub authentication set up yet). Remember to push it once you reboot into the new system.")"
   fi
 
   echo "$(green "Config backups for this machine will be saved on branch") $(bold "$backup_branch")"
