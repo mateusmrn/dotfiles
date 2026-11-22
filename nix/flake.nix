@@ -23,24 +23,35 @@
           disko.nixosModules.disko
           ./disko.nix
 
-          {
-            nix.settings.experimental-features = [
-              "nix-command"
-              "flakes"
-            ];
+          (
+            { pkgs, ... }:
+            {
+              nix.settings.experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
 
-            networking.hostName = "nixos";
+              networking.hostName = "nixos";
 
-            boot.loader.systemd-boot.enable = true;
-            boot.loader.efi.canTouchEfiVariables = true;
+              boot.loader.systemd-boot.enable = true;
+              boot.loader.efi.canTouchEfiVariables = true;
 
-            users.users.mateus = {
-              isNormalUser = true;
-              extraGroups = [ "wheel" ];
-            };
+              time.timeZone = "America/Fortaleza";
+              i18n.defaultLocale = "en_GB.UTF-8";
 
-            system.stateVersion = "26.05";
-          }
+              programs.fish.enable = true;
+
+              users.users.mateus = {
+                isNormalUser = true;
+                extraGroups = [ "wheel" ];
+                home = "/home/mateus";
+                shell = pkgs.fish;
+                packages = [ ];
+              };
+
+              system.stateVersion = "26.05";
+            }
+          )
         ];
       };
     };
