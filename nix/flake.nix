@@ -6,6 +6,11 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -13,6 +18,7 @@
       self,
       nixpkgs,
       disko,
+      home-manager,
       ...
     }:
     {
@@ -22,6 +28,13 @@
           ./hardware-configuration.nix
           disko.nixosModules.disko
           ./disko.nix
+          home-manager.nixosModules.home-manager
+
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.mateus = import ./home.nix;
+          }
 
           (
             { pkgs, ... }:
@@ -53,6 +66,11 @@
             }
           )
         ];
+      };
+
+      homeConfigurations.mateus = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./home.nix ];
       };
     };
 }
