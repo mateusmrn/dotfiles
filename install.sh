@@ -214,3 +214,27 @@ if [ "$backup_choice" = "Yes" ]; then
 
   echo "$(green "Config backups for this machine will be saved on branch") $(bold "$backup_branch")"
 fi
+
+echo "$(bold "Set a password for the '$USERNAME' user")"
+while true; do
+  read -rsp "$(bold "Password: ")" password_1
+  echo
+  read -rsp "$(bold "Confirm password: ")" password_2
+  echo
+
+  if [ -z "$password_1" ]; then
+    echo "$(red "Password cannot be empty, please try again.")"
+    continue
+  fi
+
+  if [ "$password_1" != "$password_2" ]; then
+    echo "$(red "Passwords did not match, please try again.")"
+    continue
+  fi
+
+  break
+done
+
+echo "$USERNAME:$password_1" | nixos-enter --root /mnt -c "chpasswd"
+
+echo "$(green "Password set for user") $(bold "$USERNAME")"
