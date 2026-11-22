@@ -54,7 +54,12 @@
 
               programs.fish.enable = true;
 
+              hardware.bluetooth.enable = true;
+
               environment.systemPackages = [
+                pkgs.kdePackages.bluedevil
+                pkgs.kdePackages.kcmutils
+
                 (pkgs.anki.withAddons [
                   pkgs.ankiAddons.anki-connect
                   (pkgs.anki-utils.buildAnkiAddon (finalAttrs: {
