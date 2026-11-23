@@ -230,6 +230,14 @@ if [ "$backup_choice" = "Yes" ]; then
     echo "$(yellow "Branch '$backup_branch' was created locally, but not pushed (no GitHub authentication set up yet). Remember to push it once you reboot into the new system.")"
   fi
 
+  git -C "$TARGET_DOTFILES_DIR" add nix/flake.lock
+  if git -C "$TARGET_DOTFILES_DIR" diff --cached --quiet -- nix/flake.lock; then
+    echo "$(yellow "nix/flake.lock unchanged, nothing to commit.")"
+  else
+    git -C "$TARGET_DOTFILES_DIR" -c user.name="mateusmrn" -c user.email="mateusmelornrn@gmail.com" \
+      commit -m "Update flake.lock"
+  fi
+
   echo "$(green "Config backups for this machine will be saved on branch") $(bold "$backup_branch")"
 fi
 
