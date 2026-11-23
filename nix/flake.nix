@@ -112,6 +112,12 @@
 
               hardware.bluetooth.enable = true;
 
+              # Needed for Qt/KDE apps' QML plugins (e.g. bluedevil's Bluetooth
+              # KCM) to find each other's modules outside a full Plasma
+              # session: aggregates QT_PLUGIN_PATH/QML2_IMPORT_PATH across
+              # everything in environment.systemPackages.
+              qt.enable = true;
+
               services.greetd = {
                 enable = true;
                 settings.default_session.command = "tuigreet --time --remember --remember-session --asterisks";
@@ -127,6 +133,7 @@
               environment.systemPackages = [
                 pkgs.kdePackages.bluedevil
                 pkgs.kdePackages.kcmutils
+                pkgs.kdePackages.bluez-qt
                 pkgs.docker-compose
                 pkgs.tuigreet
                 pkgs.git
