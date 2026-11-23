@@ -39,6 +39,16 @@
     extraConfig = builtins.readFile ../hypr/hyprlock.conf;
   };
 
+  programs.rofi = {
+    enable = true;
+    settings = {
+      modi = "drun,run";
+      show-icons = true;
+      font = "Anthropic Mono Web 12";
+    };
+    theme = ../rofi/theme.rasi;
+  };
+
   services.hyprpaper = {
     enable = true;
     settings = {
