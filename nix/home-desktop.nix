@@ -4,6 +4,7 @@
     pkgs.grim
     pkgs.kdePackages.dolphin
     pkgs.kdePackages.okular
+    pkgs.obsidian
 
     (pkgs.anki.withAddons [
       pkgs.ankiAddons.anki-connect
