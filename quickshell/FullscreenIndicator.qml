@@ -22,7 +22,7 @@ Row {
 
     Text {
         anchors.verticalCenter: parent.verticalCenter
-        font.family: "Anthropic Mono Web"
+        font.family: "Anthrosevka Mono"
         font.pixelSize: 11
         color: "#19b6ee"
         text: root.fullscreen ? "FULL" : "MAX"

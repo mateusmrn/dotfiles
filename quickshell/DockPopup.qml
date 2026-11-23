@@ -117,7 +117,7 @@ PanelWindow {
                         Text {
                             anchors.centerIn: parent
                             text: modelData.key
-                            font.family: "Anthropic Mono Web"
+                            font.family: "Anthrosevka Mono"
                             font.pixelSize: 9
                             color: "#6f93a8"
                         }

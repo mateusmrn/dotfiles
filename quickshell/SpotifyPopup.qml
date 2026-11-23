@@ -124,7 +124,7 @@ PopupWindow {
 
                 Text {
                     Layout.fillWidth: true
-                    font.family: "Anthropic Mono Web"
+                    font.family: "Anthrosevka Mono"
                     font.pixelSize: 13
                     font.bold: true
                     color: "#eaf4fa"

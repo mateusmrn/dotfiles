@@ -139,7 +139,7 @@ PopupWindow {
                 spacing: 1
 
                 Text {
-                    font.family: "Anthropic Mono Web"
+                    font.family: "Anthrosevka Mono"
                     font.pixelSize: 13
                     font.bold: true
                     color: "#eaf4fa"
@@ -173,32 +173,32 @@ PopupWindow {
                 RowLayout {
                     Layout.fillWidth: true
                     Text { Layout.fillWidth: true; font.pixelSize: 12; color: "#6f93a8"; text: "IP Address" }
-                    Text { font.family: "Anthropic Mono Web"; font.pixelSize: 12; color: "#eaf4fa"; text: root.ipAddress }
+                    Text { font.family: "Anthrosevka Mono"; font.pixelSize: 12; color: "#eaf4fa"; text: root.ipAddress }
                 }
 
                 RowLayout {
                     Layout.fillWidth: true
                     visible: root.connectionType === "wifi" && root.signal_ !== ""
                     Text { Layout.fillWidth: true; font.pixelSize: 12; color: "#6f93a8"; text: "Signal" }
-                    Text { font.family: "Anthropic Mono Web"; font.pixelSize: 12; color: "#eaf4fa"; text: root.signal_ + "%" }
+                    Text { font.family: "Anthrosevka Mono"; font.pixelSize: 12; color: "#eaf4fa"; text: root.signal_ + "%" }
                 }
 
                 RowLayout {
                     Layout.fillWidth: true
                     Text { Layout.fillWidth: true; font.pixelSize: 12; color: "#6f93a8"; text: "Link Speed" }
-                    Text { font.family: "Anthropic Mono Web"; font.pixelSize: 12; color: "#eaf4fa"; text: root.speed }
+                    Text { font.family: "Anthrosevka Mono"; font.pixelSize: 12; color: "#eaf4fa"; text: root.speed }
                 }
 
                 RowLayout {
                     Layout.fillWidth: true
                     Text { Layout.fillWidth: true; font.pixelSize: 12; color: "#6f93a8"; text: "Download" }
-                    Text { font.family: "Anthropic Mono Web"; font.pixelSize: 12; color: "#eaf4fa"; text: root.downloadRate }
+                    Text { font.family: "Anthrosevka Mono"; font.pixelSize: 12; color: "#eaf4fa"; text: root.downloadRate }
                 }
 
                 RowLayout {
                     Layout.fillWidth: true
                     Text { Layout.fillWidth: true; font.pixelSize: 12; color: "#6f93a8"; text: "Upload" }
-                    Text { font.family: "Anthropic Mono Web"; font.pixelSize: 12; color: "#eaf4fa"; text: root.uploadRate }
+                    Text { font.family: "Anthrosevka Mono"; font.pixelSize: 12; color: "#eaf4fa"; text: root.uploadRate }
                 }
             }
         }

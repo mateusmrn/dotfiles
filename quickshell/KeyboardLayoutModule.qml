@@ -71,7 +71,7 @@ Rectangle {
 
         Text {
             anchors.verticalCenter: parent.verticalCenter
-            font.family: "Anthropic Mono Web"
+            font.family: "Anthrosevka Mono"
             font.pixelSize: 12
             color: "#eaf4fa"
             text: root.layoutText

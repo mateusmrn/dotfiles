@@ -13,7 +13,7 @@ RowLayout {
     Text {
         Layout.alignment: Qt.AlignVCenter
         color: "#eaf4fa"
-        font.family: "Anthropic Mono Web"
+        font.family: "Anthrosevka Mono"
         font.pixelSize: 15
         text: Qt.formatDateTime(clock.date, "hh:mm")
     }
@@ -21,7 +21,7 @@ RowLayout {
     Text {
         Layout.alignment: Qt.AlignVCenter
         color: "#6f93a8"
-        font.family: "Anthropic Mono Web"
+        font.family: "Anthrosevka Mono"
         font.pixelSize: 12
         text: Qt.formatDateTime(clock.date, "ddd, MMM d")
     }

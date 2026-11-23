@@ -40,7 +40,7 @@ ColumnLayout {
             Text {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
-                font.family: "Anthropic Mono Web"
+                font.family: "Anthrosevka Mono"
                 font.pixelSize: 12
                 color: "#eaf4fa"
                 elide: Text.ElideRight
@@ -87,7 +87,7 @@ ColumnLayout {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.leftMargin: 8
                     anchors.rightMargin: 8
-                    font.family: "Anthropic Mono Web"
+                    font.family: "Anthrosevka Mono"
                     font.pixelSize: 12
                     elide: Text.ElideRight
                     color: (root.currentNode === modelData) ? "#19b6ee" : "#eaf4fa"

@@ -47,7 +47,7 @@ PopupWindow {
 
                 Text {
                     Layout.fillWidth: true
-                    font.family: "Anthropic Mono Web"
+                    font.family: "Anthrosevka Mono"
                     font.pixelSize: 13
                     font.bold: true
                     color: "#eaf4fa"
@@ -104,7 +104,7 @@ PopupWindow {
                 Text {
                     Layout.fillWidth: true
                     visible: pairedRepeater.count === 0
-                    font.family: "Anthropic Mono Web"
+                    font.family: "Anthrosevka Mono"
                     font.pixelSize: 12
                     color: "#6f93a8"
                     text: "No paired devices"
@@ -135,7 +135,7 @@ PopupWindow {
                             Text {
                                 id: label
                                 Layout.fillWidth: true
-                                font.family: "Anthropic Mono Web"
+                                font.family: "Anthrosevka Mono"
                                 font.pixelSize: 12
                                 elide: Text.ElideRight
                                 color: modelData.connected ? "#19b6ee" : "#eaf4fa"
@@ -145,7 +145,7 @@ PopupWindow {
                             Text {
                                 Layout.alignment: Qt.AlignVCenter
                                 visible: modelData.connected && modelData.batteryAvailable
-                                font.family: "Anthropic Mono Web"
+                                font.family: "Anthrosevka Mono"
                                 font.pixelSize: 11
                                 color: "#6f93a8"
                                 text: Math.round(modelData.battery * 100) + "%"
@@ -187,7 +187,7 @@ PopupWindow {
                 Text {
                     id: manageDevicesLabel
                     anchors.centerIn: parent
-                    font.family: "Anthropic Mono Web"
+                    font.family: "Anthrosevka Mono"
                     font.pixelSize: 12
                     color: "#19b6ee"
                     text: "Manage devices"

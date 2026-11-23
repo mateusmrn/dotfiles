@@ -80,7 +80,7 @@ RowLayout {
 
     Text {
         Layout.alignment: Qt.AlignVCenter
-        font.family: "Anthropic Mono Web"
+        font.family: "Anthrosevka Mono"
         font.pixelSize: 12
         color: "#6f93a8"
 

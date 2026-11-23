@@ -51,7 +51,7 @@
     settings = {
       modi = "drun,run";
       show-icons = true;
-      font = "Anthropic Mono Web 12";
+      font = "Anthrosevka Mono 12";
     };
     theme = ../rofi/theme.rasi;
   };

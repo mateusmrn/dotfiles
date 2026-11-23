@@ -40,7 +40,7 @@ Row {
 
     Text {
         anchors.verticalCenter: parent.verticalCenter
-        font.family: "Anthropic Mono Web"
+        font.family: "Anthrosevka Mono"
         font.pixelSize: 11
         color: "#ff5a5f"
         text: "REC"

@@ -14,14 +14,14 @@ ColumnLayout {
 
         Text {
             Layout.fillWidth: true
-            font.family: "Anthropic Mono Web"
+            font.family: "Anthrosevka Mono"
             font.pixelSize: 12
             color: "#eaf4fa"
             text: label
         }
 
         Text {
-            font.family: "Anthropic Mono Web"
+            font.family: "Anthrosevka Mono"
             font.pixelSize: 12
             color: "#6f93a8"
             text: value

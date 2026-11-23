@@ -26,7 +26,7 @@ Row {
                 anchors.centerIn: parent
                 text: modelData.id
                 font.pixelSize: 12
-                font.family: "Anthropic Mono Web"
+                font.family: "Anthrosevka Mono"
                 color: modelData.active ? "#06202c" : "#6f93a8"
             }
 
