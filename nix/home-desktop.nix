@@ -93,21 +93,25 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/file/3972149/highlight_by_trix-4.0.3.xpi";
           installation_mode = "force_installed";
           updates_disabled = true;
+          default_area = "navbar";
         };
         "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/file/4717567/vimium_ff-2.4.2.xpi";
           installation_mode = "force_installed";
           updates_disabled = true;
+          default_area = "navbar";
         };
         "adguardadblocker@adguard.com" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/file/5229923/adguard_adblocker-5.5.4.55.xpi";
           installation_mode = "force_installed";
           updates_disabled = true;
+          default_area = "navbar";
         };
         "{d634138d-c276-4fc8-924b-40a0ea21d284}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/file/5266358/1password_x_password_manager-8.12.46.29.xpi";
           installation_mode = "force_installed";
           updates_disabled = true;
+          default_area = "navbar";
         };
       };
 
