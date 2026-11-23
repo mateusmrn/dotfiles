@@ -41,12 +41,12 @@
     shellInit = builtins.readFile ../fish/config.fish;
     plugins = [
       {
-        name = "lambda";
+        name = "l";
         src = pkgs.fetchFromGitHub {
-          owner = "netologist";
-          repo = "theme-lambda";
-          rev = "a7cb6dbaee9e9dcbe7fea02b92fc85fb2d278869";
-          hash = "sha256-GsLcRU6ky0GSdrtmb22RZpY4r9iRVChH64LzV46Bgbk=";
+          owner = "oh-my-fish";
+          repo = "theme-l";
+          rev = "4aadb2649fd3420e6515016f869eb79455807aaa";
+          hash = "sha256-cuCZjISIsAahZ3lDFnjCcawrEOdsFXgI8+slzv2LyGc=";
         };
       }
     ];
