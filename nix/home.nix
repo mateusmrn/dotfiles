@@ -13,8 +13,27 @@
 
   programs.git = {
     enable = true;
-    userName = "mateusmrn";
-    userEmail = "mateusmelornrn@gmail.com";
+    settings = {
+      user = {
+        name = "mateusmrn";
+        email = "mateusmelornrn@gmail.com";
+      };
+      push.autoSetupRemote = true;
+      init.defaultBranch = "main";
+      alias.nuke = "!git reset --hard HEAD && git clean -fd";
+    };
+  };
+
+  programs.gh = {
+    enable = true;
+    settings = {
+      git_protocol = "https";
+      aliases.co = "pr checkout";
+    };
+    hosts."github.com" = {
+      git_protocol = "https";
+      user = "mateusmrn";
+    };
   };
 
   programs.fish = {

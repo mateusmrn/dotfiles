@@ -151,6 +151,7 @@
                 pkgs.kdePackages.bluedevil
                 pkgs.kdePackages.kcmutils
                 pkgs.docker-compose
+                pkgs.git
               ];
 
               users.users.mateus = {
