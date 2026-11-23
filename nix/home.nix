@@ -20,6 +20,17 @@
   programs.fish = {
     enable = true;
     shellInit = builtins.readFile ../fish/config.fish;
+    plugins = [
+      {
+        name = "lambda";
+        src = pkgs.fetchFromGitHub {
+          owner = "netologist";
+          repo = "theme-lambda";
+          rev = "a7cb6dbaee9e9dcbe7fea02b92fc85fb2d278869";
+          hash = "sha256-GsLcRU6ky0GSdrtmb22RZpY4r9iRVChH64LzV46Bgbk=";
+        };
+      }
+    ];
   };
 
   programs.tmux = {
