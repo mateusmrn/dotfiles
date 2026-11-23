@@ -29,7 +29,12 @@ The rest of the repo (`hypr/`, `quickshell/`, `rofi/`, `greetd/`, `alacritty/`, 
    existing `nix/hardware-configuration.nix`, set the user's password, and optionally set up a
    branch to back up this machine's generated files (`nix/flake.lock`,
    `nix/hardware-configuration.nix`) going forward.
-5. Reboot into the new system and log in.
+5. Reboot into the new system and log in. A few things aren't (and shouldn't be) automated by
+   the flake — log in interactively:
+   1. `gh auth login` — git itself authenticates to GitHub over HTTPS via `gh`'s credential
+      helper (see `nix/home.nix`), so nothing works until this is done.
+   2. Sign into 1Password.
+   3. Log into Claude Code (`claude`).
 
 If you're testing this in a VM without real GPU acceleration (e.g. VirtualBox's software-only
 3D support), pass `--hyprland-vm-fix` to force Hyprland onto a software renderer instead of
@@ -60,15 +65,6 @@ or, from a local clone:
 ```
 nix run github:nix-community/home-manager -- switch --flake ./nix#mateus
 ```
-
-## After `install.sh` finishes and you've rebooted
-
-A few things aren't (and shouldn't be) automated by the flake — log in interactively:
-
-1. `gh auth login` — git itself authenticates to GitHub over HTTPS via `gh`'s credential helper
-   (see `nix/home.nix`), so nothing works until this is done.
-2. Sign into 1Password.
-3. Log into Claude Code (`claude`).
 
 ## TODO
 
