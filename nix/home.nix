@@ -65,15 +65,6 @@
   programs.mise = {
     enable = true;
     enableFishIntegration = true;
-    globalConfig = {
-      tools = {
-        maven = "latest";
-        node = "22";
-      };
-      settings = {
-        idiomatic_version_file_enable_tools = [ "node" ];
-      };
-    };
   };
 
   programs.alacritty = {

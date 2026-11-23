@@ -3,6 +3,7 @@
   home.packages = [
     pkgs.grim
     pkgs.kdePackages.dolphin
+    pkgs.kdePackages.okular
 
     (pkgs.anki.withAddons [
       pkgs.ankiAddons.anki-connect

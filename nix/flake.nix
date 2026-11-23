@@ -57,6 +57,8 @@
               time.timeZone = "America/Fortaleza";
               i18n.defaultLocale = "en_GB.UTF-8";
 
+              networking.networkmanager.enable = true;
+
               programs.fish.enable = true;
 
               programs.hyprland.enable = true;
@@ -81,6 +83,7 @@
                 pkgs.docker-compose
                 pkgs.tuigreet
                 pkgs.git
+                pkgs.less
               ];
 
               users.users.mateus = {
