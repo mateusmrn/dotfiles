@@ -5,6 +5,8 @@
     pkgs.slurp
     pkgs.swappy
     pkgs.swayimg
+    pkgs.wf-recorder
+    pkgs.wl-clipboard
     pkgs.kdePackages.dolphin
     pkgs.kdePackages.okular
     pkgs.obsidian
