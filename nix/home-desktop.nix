@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   home.packages = [
     pkgs.grim
@@ -46,6 +46,10 @@
       };
     };
   };
+
+  # hyprland.lua already execs hyprpaper itself on "hyprland.start"; prevent the
+  # module's own systemd user service from also autostarting it.
+  systemd.user.services.hyprpaper.Install.WantedBy = lib.mkForce [ ];
 
   programs.firefox = {
     enable = true;
