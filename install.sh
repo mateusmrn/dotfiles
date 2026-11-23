@@ -110,7 +110,13 @@ mkdir -p /mnt/etc
 ln -sfn "../home/$USERNAME/dotfiles/nix" /mnt/etc/nixos
 
 FLAKE_PATH="$TARGET_DOTFILES_DIR/nix/flake.nix"
+FLAKE_LOCK_PATH="$TARGET_DOTFILES_DIR/nix/flake.lock"
 HARDWARE_CONFIG_PATH="$TARGET_DOTFILES_DIR/nix/hardware-configuration.nix"
+
+flake_lock_existed=false
+if [ -f "$FLAKE_LOCK_PATH" ]; then
+  flake_lock_existed=true
+fi
 
 flake_existed=false
 if [ -f "$FLAKE_PATH" ]; then
@@ -177,6 +183,11 @@ if [ "$reuse_hardware_config" = true ]; then
   mv "$HARDWARE_CONFIG_PATH.bak" "$HARDWARE_CONFIG_PATH"
 fi
 
+# nixos-generate-config always writes this, but nothing in flake.nix imports
+# it (the flake wires up hardware-configuration.nix and disko.nix directly),
+# so it's dead weight.
+rm -f "$TARGET_DOTFILES_DIR/nix/configuration.nix"
+
 if [ "$flake_existed" = false ]; then
   sed -i "s/nixosConfigurations\.nixos/nixosConfigurations.$HOST/" "$FLAKE_PATH"
 fi
@@ -230,9 +241,18 @@ if [ "$backup_choice" = "Yes" ]; then
     echo "$(yellow "Branch '$backup_branch' was created locally, but not pushed (no GitHub authentication set up yet). Remember to push it once you reboot into the new system.")"
   fi
 
-  git -C "$TARGET_DOTFILES_DIR" add nix/flake.lock
-  if git -C "$TARGET_DOTFILES_DIR" diff --cached --quiet -- nix/flake.lock; then
-    echo "$(yellow "nix/flake.lock unchanged, nothing to commit.")"
+  backup_paths=(nix/hardware-configuration.nix)
+
+  if [ "$flake_lock_existed" = true ]; then
+    echo "$(yellow "nix/flake.lock already existed in '$source_branch'; nothing new to capture.")"
+  else
+    backup_paths+=(nix/flake.lock)
+  fi
+
+  git -C "$TARGET_DOTFILES_DIR" add -- "${backup_paths[@]}"
+
+  if git -C "$TARGET_DOTFILES_DIR" diff --cached --quiet -- "${backup_paths[@]}"; then
+    echo "$(yellow "No machine-specific files changed, nothing to commit.")"
   else
     git_author_name=$(nix --extra-experimental-features "nix-command flakes" eval --raw \
       "$TARGET_DOTFILES_DIR/nix#homeConfigurations.$USERNAME.config.programs.git.settings.user.name")
@@ -240,7 +260,7 @@ if [ "$backup_choice" = "Yes" ]; then
       "$TARGET_DOTFILES_DIR/nix#homeConfigurations.$USERNAME.config.programs.git.settings.user.email")
 
     git -C "$TARGET_DOTFILES_DIR" -c user.name="$git_author_name" -c user.email="$git_author_email" \
-      commit -m "Update flake.lock"
+      commit -m "Record this machine's generated nix files" -- "${backup_paths[@]}"
   fi
 
   echo "$(green "Config backups for this machine will be saved on branch") $(bold "$backup_branch")"
