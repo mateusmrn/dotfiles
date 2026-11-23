@@ -2,6 +2,9 @@
 {
   home.packages = [
     pkgs.grim
+    pkgs.slurp
+    pkgs.swappy
+    pkgs.swayimg
     pkgs.kdePackages.dolphin
     pkgs.kdePackages.okular
     pkgs.obsidian

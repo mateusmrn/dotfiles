@@ -55,6 +55,11 @@
   programs.tmux = {
     enable = true;
     extraConfig = builtins.readFile ../tmux/.tmux.conf;
+    plugins = with pkgs.tmuxPlugins; [
+      resurrect
+      continuum
+      open
+    ];
   };
 
   programs.zoxide = {
