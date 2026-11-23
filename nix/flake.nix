@@ -42,7 +42,7 @@
           }
 
           (
-            { pkgs, ... }:
+            { pkgs, lib, ... }:
             {
               nixpkgs.config.allowUnfree = true;
 
@@ -60,6 +60,15 @@
               i18n.defaultLocale = "en_GB.UTF-8";
 
               networking.networkmanager.enable = true;
+
+              # Set by install.sh's --hyprland-vm-fix flag. VirtualBox's virtual GPU
+              # has no real DRM/EGL support, which crashes Hyprland on launch; this
+              # forces wlroots onto a software renderer instead. Only needed for the
+              # VM used to test this install flow, not real hardware with a real GPU.
+              environment.sessionVariables = lib.optionalAttrs (builtins.pathExists ./.hyprland-vm-fix) {
+                WLR_RENDERER = "pixman";
+                WLR_NO_HARDWARE_CURSORS = "1";
+              };
 
               services.pipewire = {
                 enable = true;

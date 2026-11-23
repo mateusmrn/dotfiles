@@ -5,6 +5,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 USERNAME="mateus"
 HOST="nixos"
 
+HYPRLAND_VM_FIX=false
+for arg in "$@"; do
+  case "$arg" in
+  --hyprland-vm-fix)
+    HYPRLAND_VM_FIX=true
+    ;;
+  esac
+done
+
 green() {
   printf '\033[0;32m%s\033[0m' "$1"
 }
@@ -92,6 +101,10 @@ echo "$(bold "Copying dotfiles repo to") $(italic "$TARGET_DOTFILES_DIR")"
 mkdir -p "$(dirname "$TARGET_DOTFILES_DIR")"
 cp -a "$SCRIPT_DIR" "$TARGET_DOTFILES_DIR"
 
+if [ "$HYPRLAND_VM_FIX" = true ]; then
+  touch "$TARGET_DOTFILES_DIR/nix/.hyprland-vm-fix"
+fi
+
 echo "$(bold "Symlinking /etc/nixos to the dotfiles flake...")"
 mkdir -p /mnt/etc
 ln -sfn "../home/$USERNAME/dotfiles/nix" /mnt/etc/nixos
@@ -173,6 +186,11 @@ git -C "$TARGET_DOTFILES_DIR" add -A
 
 echo "$(bold "Running nixos-install...")"
 nixos-install --root /mnt --flake "$TARGET_DOTFILES_DIR/nix#$HOST"
+
+if [ "$HYPRLAND_VM_FIX" = true ]; then
+  git -C "$TARGET_DOTFILES_DIR" rm --cached --quiet -- nix/.hyprland-vm-fix
+  rm -f "$TARGET_DOTFILES_DIR/nix/.hyprland-vm-fix"
+fi
 
 echo "$(green "NixOS installation complete!")"
 
