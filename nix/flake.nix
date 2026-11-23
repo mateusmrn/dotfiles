@@ -33,7 +33,12 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.mateus = import ./home.nix;
+            home-manager.users.mateus = {
+              imports = [
+                ./home.nix
+                ./home-desktop.nix
+              ];
+            };
           }
 
           (
@@ -53,6 +58,8 @@
               i18n.defaultLocale = "en_GB.UTF-8";
 
               programs.fish.enable = true;
+
+              programs.hyprland.enable = true;
 
               hardware.bluetooth.enable = true;
 
