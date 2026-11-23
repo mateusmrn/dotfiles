@@ -1,97 +1,81 @@
 # dotfiles
 
-My personal configuration files and scripts for a Arch Linux + KDE environment.
+My personal configuration for a NixOS + Hyprland environment, declared as a single Nix flake
+(`nix/flake.nix`) and installed with a guided script (`install.sh`). Disk partitioning is handled
+by [disko](https://github.com/nix-community/disko) (`nix/disko.nix`), and user-level config is
+managed by [home-manager](https://github.com/nix-community/home-manager), split into:
 
-## Setup
+- `nix/home.nix` — base tooling I want everywhere: git, `gh`, fish (with the `l` theme), tmux,
+  zoxide, mise, Alacritty, Neovim.
+- `nix/home-desktop.nix` — everything specific to this machine being a full desktop: Hyprland,
+  Quickshell, rofi, hyprpaper/hyprlock, Firefox (with policies/extensions), Anki, Obsidian.
 
-Steps that need to be taken in order to setup the environment. This is not aimed at being
-customizable. It's just a list for my personal use so that I have something to follow when I need to
-setup a new environment. Will likely turn into a script in the future.
+The rest of the repo (`hypr/`, `quickshell/`, `rofi/`, `greetd/`, `alacritty/`, `fish/`, `tmux/`,
+`nvim/`) holds the actual config files those home-manager modules point at.
 
-1. Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide).
-   In the "Install essencial packages" section, make sure to also install `networkmanager`,
-   `neovim`, `sudo` and `git`
-2. Login with root
-3. `systemctl enable NetworkManager.service && systemctl start NetworkManager.service`
-4. Connect to the Internet with `nmtui`
-5. `useradd -m mateus`
-6. `passwd mateus`
-7. `EDITOR=neovim visudo` and uncomment line for the `wheel` group
-8. `usermod -aG wheel mateus`
-9. Logout and login as `mateus`
-10. `cd`
-11. `git clone https://github.com/melosomelo/dotfiles`
-12. `sudo pacman -S $(cat dotfiles/packages/official.txt)`
-13. [Install `yay`](https://github.com/Jguer/yay?tab=readme-ov-file#installation)
-14. `yay -S $(cat dotfiles/packages/aur.txt)`
-15. `mkdir -p ~/.config/alacritty`
-16. `ln -s ~/dotfiles/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml`
-17. run `fish` and then `exit`
-18. `rm .config/fish/config.fish`
-19. `rm -rf .config/fish/functions`
-20. `ln -s ~/dotfiles/fish/config.fish ~/.config/fish/config.fish`
-21. `ln -s ~/dotfiles/fish/functions ~/.config/fish`
-22. `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
-23. `ln -s ~/dotfiles/tmux/.tmux.conf ~/.tmux.conf`
-24. `chsh -s /usr/bin/fish`
-25. `curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish`
-26. `omf install l`
-27. `omf install https://github.com/jorgebucaran/nvm.fish`
-28.
+## Installing on a new machine
+
+1. Boot the [NixOS installer image](https://nixos.org/download/) (the minimal ISO is enough —
+   it ships with `git` and Nix with flakes already usable).
+2. Get on the network. Wired usually just works (DHCP); for Wi-Fi, run `nmtui`.
+3. Clone this repo and run the installer:
+   ```
+   git clone https://github.com/mateusmrn/dotfiles
+   cd dotfiles
+   ./install.sh
+   ```
+4. Follow the prompts: pick the branch to install from, confirm or edit `nix/disko.nix` (this
+   **destroys** the target disk), confirm or edit the flake config, choose whether to reuse an
+   existing `nix/hardware-configuration.nix`, set the user's password, and optionally set up a
+   branch to back up this machine's generated files (`nix/flake.lock`,
+   `nix/hardware-configuration.nix`) going forward.
+5. Reboot into the new system and log in.
+
+If you're testing this in a VM without real GPU acceleration (e.g. VirtualBox's software-only
+3D support), pass `--hyprland-vm-fix` to force Hyprland onto a software renderer instead of
+crashing on launch. Not needed with QEMU/KVM + `virtio-gpu-gl`, which gives the guest real
+accelerated rendering.
+
+## Using just `home.nix` elsewhere
+
+For a non-NixOS machine (e.g. a work laptop) where I only want the base tooling — not the
+Hyprland desktop — the flake exposes a standalone home-manager configuration that imports only
+`home.nix`:
+
+```nix
+homeConfigurations.mateus = home-manager.lib.homeManagerConfiguration {
+  pkgs = nixpkgs.legacyPackages.x86_64-linux;
+  modules = [ ./home.nix ];
+};
+```
+
+With [Nix](https://nixos.org/download/) installed (flakes enabled), apply it with:
 
 ```
-for ext in $(cat dotfiles/code/extensions.txt)
-        code --install-extension $ext
-end
+nix run github:nix-community/home-manager -- switch --flake github:mateusmrn/dotfiles?dir=nix#mateus
 ```
 
-29. `ln -s ~/dotfiles/code/settings.json ~/.config/Code/User/settings.json`
-30. `ln -s ~/dotfiles/code/keybindings.json ~/.config/Code/User/keybindings.json`
-31. `mkdir -p ~/.ssh`
-32. `touch ~/.ssh/config`
-33. Configure `ssh` for GitHub authentication via the `config` file
-34. Run `gh auth login`
-35. `sudo mkdir -p /etc/pacman.d/hooks`
-36. `sudo ln -s ~/dotfiles/pacman/hooks/save_package_list.hook /etc/pacman.d/hooks`
-37. `sudo systemctl enable docker.service`
-38. `sudo systemctl start docker.service`
-39. `sudo usermod -aG docker mateus`
-40. `sudo systemctl enable cronie && sudo systemctl start cronie`
-41. `sudo crontab < ~/dotfiles/cron/base_crontab`
-42. `mdkir ~/.config/swhkd`
-43. `sudo ln -s ~/dotfiles/swhkd/swhkdrc ~/.config/swhkd/swhkdrc`
-44. `sudo chown root:root swhkd`
-45. `sudo chmod u+s swhkd`
-46. Start swhkd on startup
-    [with systemd](https://github.com/waycrate/swhkd/tree/main/contrib/init/systemd)
-47. `mkdir ~/.config/mise`
-48. `ln -s ~/dotfiles/mise/config.toml ~/.config/mise/config.toml`
-49. `sudo ln -s ~/dotfiles/kde/kglobalshortcutsrc ~/.config/kglobalshortcutsrc`
-50. `mkdir ~/.config/hypr`
-51. `sudo ln -s ~/dotfiles/hypr/hyprland.lua ~/.config/hypr/hyprland.lua`
-52. `sudo ln -s ~/dotfiles/hypr/hyprpaper.conf ~/.config/hypr/hyprpaper.conf`
-53. `ln -s ~/dotfiles/hypr/hyprlock.conf ~/.config/hypr/hyprlock.conf`
-54. `ln -s ~/dotfiles/quickshell ~/.config/quickshell`
-55. `ln -s ~/dotfiles/nvim ~/.config/nvim`
-56. `mkdir ~/.config/rofi`
-57. `ln -s ~/dotfiles/rofi/config.rasi ~/.config/rofi/config.rasi`
-58. `sudo ln -s ~/dotfiles/greetd/config.toml /etc/greetd/config.toml`
-59. `sudo mkdir -p /etc/systemd/system/greetd.service.d`
-60. `sudo ln -s ~/dotfiles/greetd/greetd.service.d/override.conf /etc/systemd/system/greetd.service.d/override.conf`
-61. `sudo systemctl daemon-reload`
-62. `sudo systemctl disable sddm.service`
-63. `sudo systemctl enable greetd.service`
-64. Reboot
+or, from a local clone:
 
-## Wishlist
+```
+nix run github:nix-community/home-manager -- switch --flake ./nix#mateus
+```
 
-- [ ] Configure `qutebrowser`
-- [ ] Save web bookmarks independently of web browser
-- [ ] Implement a "work mode". This'd be a mode that can be toggled in order to use more work
-      optimized software. For instance, use i3 + qutebrowser instead of Chrome + Kwin. It'd be cool
-      for times when I want to use my computer more casually or for when other people need to use it
-      for some reason.
-- [ ] Add some cool themes with color schemes
-- [ ] Add some cool screenshots to the README (e.g. fastfetch, maybe make it automatic?)
-- [ ] Turn setup section into a script. Would also be cool to have tests for this setup script.
-      Maybe via a CI/CD pipeline?
+## After `install.sh` finishes and you've rebooted
+
+A few things aren't (and shouldn't be) automated by the flake — log in interactively:
+
+1. `gh auth login` — git itself authenticates to GitHub over HTTPS via `gh`'s credential helper
+   (see `nix/home.nix`), so nothing works until this is done.
+2. Sign into 1Password.
+3. Log into Claude Code (`claude`).
+
+## TODO
+
+- [ ] Automatically sync this machine's config changes back to its backup branch over time.
+      Today, `install.sh` only captures a one-time snapshot of generated files
+      (`flake.lock`/`hardware-configuration.nix`) at install time — everything after that is
+      still a manual `git commit` + `git push`.
+- [ ] Think about whether it's worth automating credential provisioning (e.g. pulling secrets
+      from 1Password at install time). So far, the only real logins needed (GitHub, 1Password,
+      Claude Code) are each a one-time manual step with no static secret to actually automate.
