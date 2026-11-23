@@ -59,6 +59,12 @@
 
               networking.networkmanager.enable = true;
 
+              services.pipewire = {
+                enable = true;
+                alsa.enable = true;
+                pulse.enable = true;
+              };
+
               fonts.packages = [
                 pkgs.noto-fonts-cjk-sans
                 pkgs.noto-fonts-cjk-serif
