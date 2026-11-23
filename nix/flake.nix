@@ -56,6 +56,16 @@
 
               hardware.bluetooth.enable = true;
 
+              services.greetd = {
+                enable = true;
+                settings.default_session.command = "tuigreet --time --remember --remember-session --asterisks";
+              };
+
+              systemd.services.greetd = {
+                wants = [ "bluetooth.service" ];
+                after = [ "bluetooth.service" ];
+              };
+
               virtualisation.docker.enable = true;
 
               programs.firefox = {
@@ -151,6 +161,7 @@
                 pkgs.kdePackages.bluedevil
                 pkgs.kdePackages.kcmutils
                 pkgs.docker-compose
+                pkgs.tuigreet
                 pkgs.git
               ];
 
