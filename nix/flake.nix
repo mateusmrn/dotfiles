@@ -72,14 +72,15 @@
                 pkgs.noto-fonts-cjk-serif
                 pkgs.font-awesome
                 pkgs.monaspace
-                pkgs.tex-gyre
                 pkgs.cascadia-code
                 pkgs.fira-code
                 pkgs.nerd-fonts.blex-mono
                 pkgs.nerd-fonts.iosevka
                 pkgs.nerd-fonts.jetbrains-mono
                 pkgs.nerd-fonts.adwaita-mono
-
+              ]
+              ++ builtins.filter pkgs.lib.isDerivation (builtins.attrValues pkgs.tex-gyre)
+              ++ [
                 (pkgs.stdenvNoCC.mkDerivation {
                   pname = "anthrosevka-mono";
                   version = "0.4.0";
