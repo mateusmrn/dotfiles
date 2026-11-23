@@ -5,6 +5,7 @@
     pkgs.kdePackages.dolphin
     pkgs.kdePackages.okular
     pkgs.obsidian
+    pkgs.quickshell
 
     (pkgs.anki.withAddons [
       pkgs.ankiAddons.anki-connect
@@ -31,6 +32,7 @@
 
   xdg.configFile."hypr/hyprland.lua".source = ../hypr/hyprland.lua;
   xdg.configFile."hypr/scripts".source = ../hypr/scripts;
+  xdg.configFile."quickshell".source = ../quickshell;
 
   programs.hyprlock = {
     enable = true;
