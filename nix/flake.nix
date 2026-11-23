@@ -131,6 +131,9 @@
                 pkgs.tuigreet
                 pkgs.git
                 pkgs.less
+                pkgs.openssh
+                pkgs._1password-gui
+                pkgs.claude-code
               ];
 
               users.users.mateus = {
