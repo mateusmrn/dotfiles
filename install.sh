@@ -234,7 +234,12 @@ if [ "$backup_choice" = "Yes" ]; then
   if git -C "$TARGET_DOTFILES_DIR" diff --cached --quiet -- nix/flake.lock; then
     echo "$(yellow "nix/flake.lock unchanged, nothing to commit.")"
   else
-    git -C "$TARGET_DOTFILES_DIR" -c user.name="mateusmrn" -c user.email="mateusmelornrn@gmail.com" \
+    git_author_name=$(nix --extra-experimental-features "nix-command flakes" eval --raw \
+      "$TARGET_DOTFILES_DIR/nix#homeConfigurations.$USERNAME.config.programs.git.settings.user.name")
+    git_author_email=$(nix --extra-experimental-features "nix-command flakes" eval --raw \
+      "$TARGET_DOTFILES_DIR/nix#homeConfigurations.$USERNAME.config.programs.git.settings.user.email")
+
+    git -C "$TARGET_DOTFILES_DIR" -c user.name="$git_author_name" -c user.email="$git_author_email" \
       commit -m "Update flake.lock"
   fi
 
