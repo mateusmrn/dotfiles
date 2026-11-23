@@ -29,6 +29,8 @@
         version = "0.1.2";
         src = pkgs.fetchzip {
           url = "https://github.com/mateusmrn/ace/releases/download/v${finalAttrs.version}/ace-${finalAttrs.version}.ankiaddon";
+          extension = "zip";
+          stripRoot = false;
           hash = "sha256-1W44qplSN9DWgfYmx+Ac468ybwhf1Hk7q1ozeKRvTMo=";
         };
       }))
