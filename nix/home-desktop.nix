@@ -1,4 +1,32 @@
+{ pkgs, ... }:
 {
+  home.packages = [
+    pkgs.grim
+    pkgs.kdePackages.dolphin
+
+    (pkgs.anki.withAddons [
+      pkgs.ankiAddons.anki-connect
+      (pkgs.anki-utils.buildAnkiAddon (finalAttrs: {
+        pname = "advanced-review-bottombar";
+        version = "3.6.1";
+        src = pkgs.fetchFromGitHub {
+          owner = "noobj2";
+          repo = "Anki-Advanced-Review-Bottombar";
+          tag = "v${finalAttrs.version}";
+          hash = "sha256-ah51DWf1DbULF580hMj360R5qPh3fHnYM6KGBtJrgh8=";
+        };
+      }))
+      (pkgs.anki-utils.buildAnkiAddon (finalAttrs: {
+        pname = "ace";
+        version = "0.1.2";
+        src = pkgs.fetchzip {
+          url = "https://github.com/mateusmrn/ace/releases/download/v${finalAttrs.version}/ace-${finalAttrs.version}.ankiaddon";
+          hash = "sha256-1W44qplSN9DWgfYmx+Ac468ybwhf1Hk7q1ozeKRvTMo=";
+        };
+      }))
+    ])
+  ];
+
   xdg.configFile."hypr/hyprland.lua".source = ../hypr/hyprland.lua;
   xdg.configFile."hypr/scripts".source = ../hypr/scripts;
 
