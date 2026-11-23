@@ -1,4 +1,0 @@
-# Update VSCode extensions list
-0 10 * * * /usr/bin/fish -c 'ucel'
-# Clearing up some space
-0 10 * * * /usr/bin/fish -c 'fsp'

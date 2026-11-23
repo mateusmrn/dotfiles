@@ -256,3 +256,6 @@ done
 echo "$USERNAME:$password_1" | nixos-enter --root /mnt -c "chpasswd"
 
 echo "$(green "Password set for user") $(bold "$USERNAME")"
+echo
+echo "$(bold "$(green "Installation complete!")")"
+echo "Reboot the machine and log in as $(bold "$USERNAME") to start using your new NixOS system."

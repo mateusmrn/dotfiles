@@ -77,16 +77,16 @@
     settings = {
       font = {
         size = 16;
-        bold.family = "Anthropic Mono Web";
+        bold.family = "Anthrosevka Mono";
         bold_italic = {
-          family = "Anthropic Mono Web";
+          family = "Anthrosevka Mono";
           style = "Italic";
         };
         italic = {
-          family = "Anthropic Mono Web";
+          family = "Anthrosevka Mono";
           style = "Italic";
         };
-        normal.family = "Anthropic Mono Web";
+        normal.family = "Anthrosevka Mono";
         offset.y = 5;
       };
 
