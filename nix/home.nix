@@ -39,6 +39,7 @@
   programs.claude-code = {
     enable = true;
     settings.includeCoAuthoredBy = false;
+    skills = ../.claude/skills;
   };
 
   programs.fish = {
