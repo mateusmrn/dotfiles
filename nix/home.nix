@@ -38,6 +38,7 @@
 
   programs.claude-code = {
     enable = true;
+    settings.includeCoAuthoredBy = false;
   };
 
   programs.fish = {
