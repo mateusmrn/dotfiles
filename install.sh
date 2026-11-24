@@ -276,12 +276,8 @@ if [ "$backup_choice" = "Yes" ]; then
       commit -m "Record this machine's config after initial install" -- "${backup_paths[@]}"
   fi
 
-  echo "$(bold "Pushing branch") $(italic "$backup_branch") $(bold "to the remote...")"
-  if git -C "$TARGET_DOTFILES_DIR" push origin "HEAD:$backup_branch"; then
-    echo "$(green "Config backups for this machine will be saved on branch") $(bold "$backup_branch")"
-  else
-    echo "$(yellow "Couldn't push branch '$backup_branch' (likely no GitHub authentication set up yet). It'll be pushed automatically after your next nixos-rebuild switch, or you can push it manually once you've run 'gh auth login'.")"
-  fi
+  echo "$(green "Config backups for this machine will be saved on branch") $(bold "$backup_branch")"
+  echo "$(yellow "Not pushing yet (no GitHub authentication set up at this point). It'll be pushed automatically after your next nixos-rebuild switch, or you can push it manually once you've run 'gh auth login'.")"
 fi
 
 echo "$(bold "Set a password for the '$USERNAME' user")"
