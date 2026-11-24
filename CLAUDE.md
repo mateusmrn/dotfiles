@@ -1,45 +1,71 @@
 # dotfiles
 
-Personal configuration files for an Arch Linux desktop environment, managed as a plain git
-repo in `~/dotfiles` and symlinked out to `~/.config` (and a few system paths under `/etc`).
-There is no stow/chezmoi-style tooling — symlinks are created manually, see README.md's setup
-list (note: that list is a point-in-time setup log and can drift out of date; prefer the actual
-config files and git history over it for current state).
+Personal configuration for a NixOS + Hyprland desktop, declared as a single Nix flake under
+`nix/` and installed by a guided script (`install.sh`). The repo lives at `~/dotfiles`;
+`install.sh` symlinks `/etc/nixos` → `~/dotfiles/nix`, so `nixos-rebuild switch` picks it up.
+User-level config is home-manager, split in two modules. README.md is the user-facing install
+doc — keep it in sync when the module split or the repo layout changes.
 
-## Desktop environment
+Nothing is symlinked by hand anymore: a config file matters only if some module under `nix/`
+points at it. Editing a file nothing references changes nothing.
 
-Hyprland (Wayland compositor) is the primary environment, not KDE/SDDM despite the leftover
-`kde/kglobalshortcutsrc` file:
-- `hypr/` — Hyprland config (`hyprland.lua`, using a Lua config framework rather than the
-  stock `hyprland.conf`), `hyprpaper.conf` for wallpaper, and helper `scripts/`.
-- `quickshell/` — QML panel/bar built on Quickshell: workspaces, volume, network, bluetooth,
-  Spotify, system usage widgets, a dock, and popups for each module.
-- `rofi/` — app launcher (`SUPER+SPACE`) config/theme.
-- `greetd/` — login manager config (tuigreet), replacing a prior SDDM setup.
-- `alacritty/` — terminal emulator config (default terminal, `SUPER+Return`).
-- Terminal/launcher/file-manager choices and keybindings live in `hyprland.lua`.
+## The flake
 
-## Shell and CLI tooling
+- `nix/flake.nix` — inputs (nixpkgs `nixos-26.05`, disko, home-manager) and two outputs:
+  `nixosConfigurations.nixos` (the full machine; `install.sh` renames the attr to the host) and
+  `homeConfigurations.mateus` (standalone home-manager importing only `home.nix`, for non-NixOS
+  machines). The inline system module holds boot/locale/networking, pipewire, fonts (including
+  an Anthrosevka Mono derivation fetched from GitHub), greetd + tuigreet, bluetooth/Qt, docker,
+  system packages, and the `mateus` user (fish as login shell).
+- `nix/disko.nix` — disk layout (GPT, 512M ESP + ext4 root, `/dev/vda` by default). Applying it
+  **destroys** the target disk.
+- `nix/home.nix` — portable user config: git, `gh`, fish (`l` theme), tmux, zoxide, mise,
+  Neovim.
+- `nix/home-desktop.nix` — desktop-only: Hyprland/Quickshell config files, Alacritty, rofi,
+  hyprlock, hyprpaper, Firefox (policies, forced extensions, bookmarks), Anki (with add-ons
+  built from source), Obsidian, cursor theme, screenshot/clipboard tooling.
+- `nix/hardware-configuration.nix` and `nix/flake.lock` are per-machine and generated at
+  install time, not tracked on this branch; `install.sh` can commit them to a per-host
+  backup branch.
+- `nix/.hyprland-vm-fix` — marker file written by `install.sh --hyprland-vm-fix`; `flake.nix`
+  tests `pathExists` on it to force `WLR_RENDERER=pixman` for GPU-less VMs. Never committed.
 
-- `fish/` — shell config (`config.fish`) and custom functions (`dot.fish`, `fsp.fish`,
-  `spl.fish`, `ucel.fish`).
-- `tmux/` — `.tmux.conf`, uses TPM for plugins.
-- `mise/` — per-tool version manager config (e.g. Node, Maven).
-- `nvim/` — Neovim config based on NvChad (`lua/nvchad`, `lua/plugins`, `lua/configs`,
-  `lua/themes`), LSP/treesitter setup lives here.
-- `code/` — VS Code `settings.json`, `keybindings.json`, and an extension list
-  (`extensions.txt`, kept in sync by the `ucel` fish function via cron).
+Flake evaluation only sees git-tracked content, which is why `install.sh` runs `git add -A`
+before `nixos-install`. A brand-new file won't be picked up until it's at least staged.
 
-## System-level config
+## Config files the modules point at
 
-- `pacman/` — `pacman.conf` plus a hook (`hooks/save_package_list.hook`) that keeps
-  `packages/official.txt` and `packages/aur.txt` up to date on every package operation.
-- `packages/` — generated package lists (official repos + AUR) used to reprovision a machine.
-- `cron/` — `base_crontab` installed via `crontab`, currently runs the VS Code extension sync
-  (`ucel`) and a disk space cleanup (`fsp`) daily.
+- `hypr/` — `hyprland.lua` (Hyprland's Lua config and its `hl` API, not the stock
+  `hyprland.conf`) plus helper `scripts/`; terminal, launcher, file manager and keybindings are
+  all defined there. `hyprlock.conf` is read in as `extraConfig`.
+- `quickshell/` — QML shell/bar: workspaces, volume, network, bluetooth, Spotify, system usage,
+  stopwatch, dock, and a popup per module.
+- `fish/` — `config.fish` is inlined as `shellInit`; `fish/functions/` is symlinked as-is.
+- `tmux/.tmux.conf` — read in as `extraConfig`; plugins come from `pkgs.tmuxPlugins`, not TPM.
+- `nvim/` — NvChad-based config, whole directory symlinked.
+- `rofi/theme.rasi` — the rofi theme (its settings are declared in Nix).
+
+## Arch-era leftovers
+
+Still in the repo but wired to nothing:
+
+- `code/` — VS Code settings, keybindings and `extensions.txt`. No module reads it (VS Code
+  isn't installed by the flake either).
+- `greetd/` — superseded by `services.greetd` in `flake.nix`.
+- `hypr/hyprpaper.conf` — superseded by `services.hyprpaper` in `home-desktop.nix`.
+- `fish/functions/{fsp,spl,ucel}.fish` — still call `pacman`/`yay` and write the deleted
+  `packages/` lists, so they're broken on NixOS.
+
+## Branches
+
+- `nixos-migration` (current) — the NixOS rewrite; the only branch this file describes.
+- `desktop` — the Arch + Hyprland machine this grew out of; the nix work branched off it and it
+  now only receives automated `[YYYY-MM-DD_HH:MM] updating packages list` commits from the old
+  pacman hook.
+- `main` — a much older Arch + i3/polybar state, diverged since Aug 2025.
+- Per-host branches created by `install.sh` carry that machine's generated nix files.
 
 ## Conventions
 
-- Commits with messages like `[YYYY-MM-DD_HH:MM] updating packages list` are automated, made
-  by the pacman hook — not manual work.
 - Never append `Co-Authored-By` trailers to commit messages (see `.claude/CLAUDE.md`).
+- `[YYYY-MM-DD_HH:MM] updating packages list` commits are automated, not manual work.
