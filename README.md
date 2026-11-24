@@ -28,8 +28,10 @@ holds the actual config files those home-manager modules point at.
 4. Follow the prompts: pick the branch to install from, confirm or edit `nix/disko.nix` (this
    **destroys** the target disk), confirm or edit the flake config, choose whether to reuse an
    existing `nix/hardware-configuration.nix`, set the user's password, and optionally set up a
-   branch to back up this machine's generated files (`nix/flake.lock`,
-   `nix/hardware-configuration.nix`) going forward.
+   branch to back up this machine's config to. If you do, every future `nixos-rebuild switch`
+   automatically commits and pushes any changes to that branch (`services.dotfilesAutoCommit`,
+   `nix/auto-commit.nix`) — not just the one-time `nix/flake.lock`/`hardware-configuration.nix`
+   snapshot captured at install time.
 5. Reboot into the new system and log in. A few things aren't (and shouldn't be) automated by
    the flake — log in interactively:
    1. Sign into 1Password.
@@ -64,10 +66,6 @@ nix run github:nix-community/home-manager -- switch --flake ./nix#mateus
 
 ## TODO
 
-- [ ] Automatically sync this machine's config changes back to its backup branch over time.
-      Today, `install.sh` only captures a one-time snapshot of generated files
-      (`flake.lock`/`hardware-configuration.nix`) at install time — everything after that is
-      still a manual `git commit` + `git push`.
 - [ ] Think about whether it's worth automating credential provisioning (e.g. pulling secrets
       from 1Password at install time). So far, the only real logins needed (GitHub, 1Password,
       Claude Code) are each a one-time manual step with no static secret to actually automate.
