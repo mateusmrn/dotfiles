@@ -1,4 +1,11 @@
 { pkgs, lib, ... }:
+let
+  # Store path of the shared wallpaper, as a string rather than a Nix path:
+  # hyprpaper's settings are rendered by toHyprconf, whose scalar leaves go
+  # through generators.mkValueStringDefault, which aborts on a path value.
+  # hyprlock.conf gets the same string substituted into it below.
+  wallpaper = "${../wallpapers/a_ship_in_the_water.jpg}";
+in
 {
   home.pointerCursor = {
     enable = true;
@@ -111,7 +118,13 @@
 
   programs.hyprlock = {
     enable = true;
-    extraConfig = builtins.readFile ../hypr/hyprlock.conf;
+    # hyprlock.conf is read in verbatim and can't interpolate anything itself,
+    # so it carries an @wallpaper@ placeholder that's filled in here. Without
+    # this it pointed at ~/Pictures/wallpapers, which doesn't exist on a fresh
+    # install -- the lock screen just came up with no background.
+    extraConfig = builtins.replaceStrings [ "@wallpaper@" ] [ wallpaper ] (
+      builtins.readFile ../hypr/hyprlock.conf
+    );
   };
 
   programs.rofi = {
@@ -130,11 +143,7 @@
       splash = false;
       wallpaper = {
         monitor = "";
-        # Interpolated, not a bare path: toHyprconf sends scalar leaves through
-        # generators.mkValueStringDefault, which aborts on a Nix path value even
-        # though the option type accepts one. "${...}" copies the file into the
-        # store and yields its path as a string.
-        path = "${../wallpapers/a_ship_in_the_water.jpg}";
+        path = wallpaper;
         fit_mode = "cover";
       };
     };
