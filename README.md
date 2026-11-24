@@ -11,7 +11,7 @@ managed by [home-manager](https://github.com/nix-community/home-manager), split 
   Quickshell, rofi, hyprpaper/hyprlock, Alacritty, Firefox (with policies/extensions), Anki,
   Obsidian.
 
-The rest of the repo (`hypr/`, `quickshell/`, `rofi/`, `greetd/`, `fish/`, `tmux/`, `nvim/`)
+The rest of the repo (`hypr/`, `quickshell/`, `rofi/`, `fish/`, `tmux/`, `nvim/`, `wallpapers/`)
 holds the actual config files those home-manager modules point at.
 
 ## Installing on a new machine

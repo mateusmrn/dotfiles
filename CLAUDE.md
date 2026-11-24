@@ -42,17 +42,23 @@ before `nixos-install`. A brand-new file won't be picked up until it's at least 
 - `tmux/.tmux.conf` — read in as `extraConfig`; plugins come from `pkgs.tmuxPlugins`, not TPM.
 - `nvim/` — NvChad-based config, whole directory symlinked.
 - `rofi/theme.rasi` — the rofi theme (its settings are declared in Nix).
+- `wallpapers/` — referenced as a Nix path from `services.hyprpaper.settings`, so it's copied
+  into the store rather than needing to exist elsewhere on disk.
 
 ## Arch-era leftovers
 
-Still in the repo but wired to nothing:
+`greetd/`, `hypr/hyprpaper.conf`, `rofi/config.rasi`, and `fish/functions/{fsp,spl}.fish` were
+removed once superseded by their Nix equivalents (`services.greetd`/`services.hyprpaper` in
+`flake.nix`/`home-desktop.nix`, inline rofi settings) or found calling `pacman`/`yay` and writing
+the deleted `packages/` lists.
+
+Still kept, deliberately, wired to nothing in the flake:
 
 - `code/` — VS Code settings, keybindings and `extensions.txt`. No module reads it (VS Code
-  isn't installed by the flake either).
-- `greetd/` — superseded by `services.greetd` in `flake.nix`.
-- `hypr/hyprpaper.conf` — superseded by `services.hyprpaper` in `home-desktop.nix`.
-- `fish/functions/{fsp,spl,ucel}.fish` — still call `pacman`/`yay` and write the deleted
-  `packages/` lists, so they're broken on NixOS.
+  isn't installed by the flake either); kept while still deciding what to do with it.
+- `fish/functions/ucel.fish` — maintains `code/extensions.txt` via `code --list-extensions`.
+  Kept alongside `code/` for the same reason. Doesn't call `pacman`/`yay`, so unlike `fsp`/`spl`
+  it'd still work as-is if `code` were ever installed.
 
 ## Branches
 
