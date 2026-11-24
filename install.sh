@@ -64,7 +64,8 @@ echo
 cat "$DISKO_PATH"
 echo
 
-echo "$(yellow "Note: this does NOT blindly wipe the target disk. If it already has a partition")"
+echo "$(yellow "Note: on this branch, this does NOT blindly wipe the target disk -- changed")"
+echo "$(yellow "specifically for this PC's dual-boot setup. If the disk already has a partition")"
 echo "$(yellow "table, only the partitions declared above are touched -- anything else on the disk")"
 echo "$(yellow "(e.g. another OS) is left alone. If you actually want a clean disk and it isn't")"
 echo "$(yellow "already blank, wipe it yourself first (e.g. 'sgdisk --zap-all /dev/yourdisk').")"
