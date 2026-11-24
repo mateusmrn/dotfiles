@@ -130,7 +130,7 @@
       splash = false;
       wallpaper = {
         monitor = "";
-        path = "/home/mateus/Pictures/wallpapers/a_ship_in_the_water.jpg";
+        path = ../wallpapers/a_ship_in_the_water.jpg;
         fit_mode = "cover";
       };
     };
