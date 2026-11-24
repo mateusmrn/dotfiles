@@ -64,13 +64,6 @@ echo
 cat "$DISKO_PATH"
 echo
 
-echo "$(yellow "Note: on this branch, this does NOT blindly wipe the target disk -- changed")"
-echo "$(yellow "specifically for this PC's dual-boot setup. If the disk already has a partition")"
-echo "$(yellow "table, only the partitions declared above are touched -- anything else on the disk")"
-echo "$(yellow "(e.g. another OS) is left alone. If you actually want a clean disk and it isn't")"
-echo "$(yellow "already blank, wipe it yourself first (e.g. 'sgdisk --zap-all /dev/yourdisk').")"
-echo
-
 echo "$(bold "Do you want to use this disk configuration as is, or make changes to it?")"
 select disko_choice in "Use as is" "Make changes"; do
   case "$disko_choice" in
@@ -88,12 +81,7 @@ select disko_choice in "Use as is" "Make changes"; do
 done
 
 echo "$(bold "Partitioning and formatting the disk...")"
-# No `destroy`: it unconditionally wipes the partition table of the whole
-# disk, which would also wipe a dual-booted OS sharing that disk. `format`
-# alone still initializes a genuinely blank disk correctly (disko only
-# skips clearing the table when blkid finds one already there), so this
-# works for both cases.
-nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko -- --mode format,mount "$DISKO_PATH"
+nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko -- --mode destroy,format,mount "$DISKO_PATH"
 
 echo "$(green "Done. Resulting disk layout:")"
 lsblk -f
