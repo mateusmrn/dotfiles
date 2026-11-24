@@ -6,12 +6,13 @@ by [disko](https://github.com/nix-community/disko) (`nix/disko.nix`), and user-l
 managed by [home-manager](https://github.com/nix-community/home-manager), split into:
 
 - `nix/home.nix` — base tooling I want everywhere: git, `gh`, fish (with the `l` theme), tmux,
-  zoxide, mise, Alacritty, Neovim.
+  zoxide, mise, Neovim.
 - `nix/home-desktop.nix` — everything specific to this machine being a full desktop: Hyprland,
-  Quickshell, rofi, hyprpaper/hyprlock, Firefox (with policies/extensions), Anki, Obsidian.
+  Quickshell, rofi, hyprpaper/hyprlock, Alacritty, Firefox (with policies/extensions), Anki,
+  Obsidian.
 
-The rest of the repo (`hypr/`, `quickshell/`, `rofi/`, `greetd/`, `alacritty/`, `fish/`, `tmux/`,
-`nvim/`) holds the actual config files those home-manager modules point at.
+The rest of the repo (`hypr/`, `quickshell/`, `rofi/`, `greetd/`, `fish/`, `tmux/`, `nvim/`)
+holds the actual config files those home-manager modules point at.
 
 ## Installing on a new machine
 
