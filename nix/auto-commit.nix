@@ -10,7 +10,7 @@ in
   options.services.dotfilesAutoCommit = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = false; # Set to true by install.sh's backup-branch step.
+      default = true;
       description = ''
         Whether to automatically commit and push this machine's dotfiles
         repo (~/dotfiles) to its backup branch after every
@@ -22,7 +22,7 @@ in
 
     branch = lib.mkOption {
       type = lib.types.str;
-      default = ""; # Filled in by install.sh's backup-branch step.
+      default = "nixos-desktop";
       description = "Git branch in ~/dotfiles to commit and push changes to.";
     };
   };
