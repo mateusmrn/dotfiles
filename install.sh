@@ -201,26 +201,51 @@ done
 
 if [ "$backup_choice" = "Yes" ]; then
   while true; do
-    read -rp "$(bold "Branch name [$HOST]: ")" backup_branch_1
-    backup_branch_1="${backup_branch_1:-$HOST}"
-    read -rp "$(bold "Confirm branch name: ")" backup_branch_2
-    backup_branch_2="${backup_branch_2:-$HOST}"
+    while true; do
+      read -rp "$(bold "Branch name [$HOST]: ")" backup_branch_1
+      backup_branch_1="${backup_branch_1:-$HOST}"
+      read -rp "$(bold "Confirm branch name: ")" backup_branch_2
+      backup_branch_2="${backup_branch_2:-$HOST}"
 
-    if [ "$backup_branch_1" = "$backup_branch_2" ]; then
-      backup_branch="$backup_branch_1"
-      break
+      if [ "$backup_branch_1" = "$backup_branch_2" ]; then
+        backup_branch="$backup_branch_1"
+        break
+      fi
+
+      echo "$(red "Branch names did not match, please try again.")"
+    done
+
+    branch_exists=false
+    if git -C "$TARGET_DOTFILES_DIR" ls-remote --exit-code --heads origin "$backup_branch" >/dev/null 2>&1; then
+      branch_exists=true
     fi
 
-    echo "$(red "Branch names did not match, please try again.")"
+    if [ "$branch_exists" = true ]; then
+      echo "$(yellow "Branch '$backup_branch' already exists on the remote. It may already be in use by another machine, and syncing with it could lead to conflicts.")"
+      echo "$(bold "Continue using this branch anyway?")"
+      select branch_confirm in "Yes" "No, choose a different name"; do
+        case "$branch_confirm" in
+        "Yes")
+          break
+          ;;
+        "No, choose a different name")
+          continue 2
+          ;;
+        *)
+          echo "$(red "Invalid choice, please try again.")"
+          ;;
+        esac
+      done
+    fi
+
+    break
   done
 
-  if git -C "$TARGET_DOTFILES_DIR" ls-remote --exit-code --heads origin "$backup_branch" >/dev/null 2>&1; then
-    echo "$(yellow "Branch '$backup_branch' already exists on the remote.")"
+  if [ "$branch_exists" = true ]; then
     git -C "$TARGET_DOTFILES_DIR" fetch origin "$backup_branch"
     git -C "$TARGET_DOTFILES_DIR" checkout "$backup_branch"
   else
     git -C "$TARGET_DOTFILES_DIR" checkout -b "$backup_branch"
-    echo "$(yellow "Branch '$backup_branch' was created locally, but not pushed (no GitHub authentication set up yet). Remember to push it once you reboot into the new system.")"
   fi
 
   AUTO_COMMIT_PATH="$TARGET_DOTFILES_DIR/nix/auto-commit.nix"
@@ -248,10 +273,15 @@ if [ "$backup_choice" = "Yes" ]; then
       "$TARGET_DOTFILES_DIR/nix#homeConfigurations.$USERNAME.config.programs.git.settings.user.email")
 
     git -C "$TARGET_DOTFILES_DIR" -c user.name="$git_author_name" -c user.email="$git_author_email" \
-      commit -m "Record this machine's generated nix files" -- "${backup_paths[@]}"
+      commit -m "Record this machine's config after initial install" -- "${backup_paths[@]}"
   fi
 
-  echo "$(green "Config backups for this machine will be saved on branch") $(bold "$backup_branch")"
+  echo "$(bold "Pushing branch") $(italic "$backup_branch") $(bold "to the remote...")"
+  if git -C "$TARGET_DOTFILES_DIR" push origin "HEAD:$backup_branch"; then
+    echo "$(green "Config backups for this machine will be saved on branch") $(bold "$backup_branch")"
+  else
+    echo "$(yellow "Couldn't push branch '$backup_branch' (likely no GitHub authentication set up yet). It'll be pushed automatically after your next nixos-rebuild switch, or you can push it manually once you've run 'gh auth login'.")"
+  fi
 fi
 
 echo "$(bold "Set a password for the '$USERNAME' user")"
