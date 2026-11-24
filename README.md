@@ -44,16 +44,16 @@ holds the actual config files those home-manager modules point at.
    ```
    ./install.sh
    ```
-6. Follow the prompts: confirm the detected mounts, confirm or edit the flake config, choose
-   whether to reuse an existing `nix/hardware-configuration.nix`, set the user's password, and
-   optionally set up a branch to back up this machine's config to. If you do, every future
-   `nixos-rebuild switch` automatically commits and pushes any changes to that branch
-   (`services.dotfilesAutoCommit`, `nix/auto-commit.nix`) — not just the one-time
+6. Follow the prompts: confirm the detected mounts, confirm or edit the flake config, set the
+   user's password, and optionally set up a branch to back up this machine's config to. If you
+   do, every future `nixos-rebuild switch` automatically commits and pushes any changes to that
+   branch (`services.dotfilesAutoCommit`, `nix/auto-commit.nix`) — not just the one-time
    `nix/flake.lock`/`hardware-configuration.nix` snapshot captured at install time.
 
-   Only reuse an existing `hardware-configuration.nix` if its filesystem UUIDs match the disk
-   you just partitioned — it now carries the `fileSystems`/`swapDevices` entries, so a stale one
-   produces a system that won't boot.
+   `nix/hardware-configuration.nix` is always regenerated from this machine's hardware and the
+   current `/mnt` mounts, overwriting any copy a per-host branch had committed. It's the only
+   thing declaring `fileSystems`/`swapDevices`, so reusing a stale one is just a way to build a
+   system that won't boot — there's no prompt for it.
 7. Reboot into the new system and log in. A few things aren't (and shouldn't be) automated by
    the flake — log in interactively:
    1. Sign into 1Password.
