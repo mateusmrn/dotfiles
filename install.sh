@@ -138,40 +138,15 @@ else
   echo "$(yellow "No existing flake config found; one will be generated automatically.")"
 fi
 
-reuse_hardware_config=false
+# hardware-configuration.nix is always regenerated, never reused: it is the
+# only thing declaring fileSystems/swapDevices, so it describes the disk that
+# was just partitioned and this machine's hardware. A copy carried over from
+# another host (or an earlier layout on this one) builds a system that won't
+# boot. If a per-host branch has one committed, this overwrites it.
 if [ -f "$HARDWARE_CONFIG_PATH" ]; then
-  echo "$(green "Found an existing hardware config at") $(bold "nix/hardware-configuration.nix")"
-  echo
-  cat "$HARDWARE_CONFIG_PATH"
-  echo
-
-  echo "$(yellow "Careful: this file now also carries the fileSystems/swapDevices entries.")"
-  echo "$(yellow "Only reuse it if its filesystem UUIDs match the disk you just partitioned --")"
-  echo "$(yellow "otherwise answer No and let it be regenerated from the current mounts.")"
-  echo
-
-  echo "$(bold "Do you want to reuse this hardware configuration?")"
-  select hardware_choice in "Yes" "No"; do
-    case "$hardware_choice" in
-    "Yes")
-      reuse_hardware_config=true
-      break
-      ;;
-    "No")
-      rm "$HARDWARE_CONFIG_PATH"
-      break
-      ;;
-    *)
-      echo "$(red "Invalid choice, please try again.")"
-      ;;
-    esac
-  done
-else
-  echo "$(yellow "No existing hardware config found; one will be generated automatically.")"
-fi
-
-if [ "$reuse_hardware_config" = true ]; then
-  cp "$HARDWARE_CONFIG_PATH" "$HARDWARE_CONFIG_PATH.bak"
+  echo "$(yellow "Found an existing nix/hardware-configuration.nix; it will be regenerated")"
+  echo "$(yellow "from this machine's hardware and the current /mnt mounts.")"
+  rm "$HARDWARE_CONFIG_PATH"
 fi
 
 # No --no-filesystems: nothing else declares the filesystems, so
@@ -179,10 +154,6 @@ fi
 # entries derived from what's currently mounted under /mnt.
 echo "$(bold "Generating NixOS flake configuration...")"
 nixos-generate-config --flake --root /mnt
-
-if [ "$reuse_hardware_config" = true ]; then
-  mv "$HARDWARE_CONFIG_PATH.bak" "$HARDWARE_CONFIG_PATH"
-fi
 
 # nixos-generate-config always writes this, but nothing in flake.nix imports
 # it (the flake wires up hardware-configuration.nix directly), so it's dead

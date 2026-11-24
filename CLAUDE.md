@@ -26,7 +26,9 @@ points at it. Editing a file nothing references changes nothing.
   install time, not tracked on this branch; `install.sh` can commit them to a per-host
   backup branch. `hardware-configuration.nix` is the *only* thing declaring `fileSystems`
   and `swapDevices` — `install.sh` generates it from the live `/mnt` mounts (no
-  `--no-filesystems`), so it is machine-specific and never portable between hosts.
+  `--no-filesystems`), so it is machine-specific and never portable between hosts. It is
+  always regenerated, overwriting any committed copy; there is deliberately no option to
+  reuse one, since a stale copy only ever produces an unbootable system.
 
 There is no disko. Partitioning, formatting and mounting are manual steps done before
 `install.sh` runs; the script only verifies that `/mnt` and `/mnt/boot` are mountpoints and
