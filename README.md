@@ -1,9 +1,10 @@
 # dotfiles
 
 My personal configuration for a NixOS + Hyprland environment, declared as a single Nix flake
-(`nix/flake.nix`) and installed with a guided script (`install.sh`). Disk partitioning is handled
-by [disko](https://github.com/nix-community/disko) (`nix/disko.nix`), and user-level config is
-managed by [home-manager](https://github.com/nix-community/home-manager), split into:
+(`nix/flake.nix`) and installed with a guided script (`install.sh`). Disk partitioning is **not**
+automated — you partition, format and mount the target yourself, and `install.sh` installs onto
+whatever is mounted at `/mnt`. User-level config is managed by
+[home-manager](https://github.com/nix-community/home-manager), split into:
 
 - `nix/home.nix` — base tooling I want everywhere: git, `gh`, fish (with the `l` theme), tmux,
   zoxide, mise, Neovim.
@@ -27,18 +28,33 @@ holds the actual config files those home-manager modules point at.
    cd dotfiles
    git checkout nixos-desktop   # or whichever branch describes this machine
    ```
-4. Run the installer:
+4. **Partition, format and mount the disk yourself.** `install.sh` never touches the partition
+   table — it installs onto whatever is already mounted under `/mnt`, and
+   `nix/hardware-configuration.nix` is generated from those live mounts. At minimum you need:
+   - an ESP (FAT32, type EF00) mounted at `/mnt/boot` — the flake boots with systemd-boot;
+   - a root filesystem mounted at `/mnt`;
+   - optionally swap, `swapon`'d before running the script so it lands in `swapDevices`.
+
+   Mount the ESP *after* the root filesystem, so `/mnt/boot` ends up inside it. The installer
+   refuses to run if either `/mnt` or `/mnt/boot` is not a mountpoint, prints what it found, and
+   asks you to confirm the layout before writing anything. Doing this by hand is deliberate: it
+   keeps the installer from being able to wipe a partition table it shouldn't, which matters on
+   a machine that dual-boots another OS off the same disk.
+5. Run the installer:
    ```
    ./install.sh
    ```
-5. Follow the prompts: confirm or edit `nix/disko.nix` (this **destroys** the target disk),
-   confirm or edit the flake config, choose whether to reuse an existing
-   `nix/hardware-configuration.nix`, set the user's password, and optionally set up a
-   branch to back up this machine's config to. If you do, every future `nixos-rebuild switch`
-   automatically commits and pushes any changes to that branch (`services.dotfilesAutoCommit`,
-   `nix/auto-commit.nix`) — not just the one-time `nix/flake.lock`/`hardware-configuration.nix`
-   snapshot captured at install time.
-6. Reboot into the new system and log in. A few things aren't (and shouldn't be) automated by
+6. Follow the prompts: confirm the detected mounts, confirm or edit the flake config, choose
+   whether to reuse an existing `nix/hardware-configuration.nix`, set the user's password, and
+   optionally set up a branch to back up this machine's config to. If you do, every future
+   `nixos-rebuild switch` automatically commits and pushes any changes to that branch
+   (`services.dotfilesAutoCommit`, `nix/auto-commit.nix`) — not just the one-time
+   `nix/flake.lock`/`hardware-configuration.nix` snapshot captured at install time.
+
+   Only reuse an existing `hardware-configuration.nix` if its filesystem UUIDs match the disk
+   you just partitioned — it now carries the `fileSystems`/`swapDevices` entries, so a stale one
+   produces a system that won't boot.
+7. Reboot into the new system and log in. A few things aren't (and shouldn't be) automated by
    the flake — log in interactively:
    1. Sign into 1Password.
    2. `gh auth login` — git itself authenticates to GitHub over HTTPS via `gh`'s credential

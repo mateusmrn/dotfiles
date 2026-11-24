@@ -43,39 +43,54 @@ echo "$(yellow "This script does not switch branches. If that isn't the branch y
 echo "$(yellow "(Ctrl-C), 'git checkout' the one you do want, and run this script again.")"
 echo
 
-DISKO_PATH="$SCRIPT_DIR/nix/disko.nix"
+# This script does not touch the partition table: partitioning, formatting
+# and mounting the target are done by hand beforehand. The generated
+# hardware-configuration.nix captures whatever is mounted under /mnt at this
+# point, so the mounts have to be complete and correct before continuing.
+echo "$(bold "Checking the target filesystems are mounted...")"
 
-if [ ! -f "$DISKO_PATH" ]; then
-  echo "$(red "No nix/disko.nix file found for branch '$source_branch'.")"
+if ! mountpoint -q /mnt; then
+  echo "$(red "Nothing is mounted at /mnt.")"
+  echo "Partition and format the disk yourself, then mount the root filesystem at"
+  echo "/mnt and the ESP at /mnt/boot before running this script. See the README."
   exit 1
 fi
 
-echo "$(green "Found a disk configuration at") $(bold "nix/disko.nix")"
-echo
-cat "$DISKO_PATH"
-echo
+if ! mountpoint -q /mnt/boot; then
+  echo "$(red "Nothing is mounted at /mnt/boot.")"
+  echo "This config boots with systemd-boot, which needs an ESP mounted at /mnt/boot."
+  exit 1
+fi
 
-echo "$(bold "Do you want to use this disk configuration as is, or make changes to it?")"
-select disko_choice in "Use as is" "Make changes"; do
-  case "$disko_choice" in
-  "Use as is")
+echo "$(green "Mounted filesystems under /mnt:")"
+findmnt --real --submounts --output TARGET,SOURCE,FSTYPE,SIZE /mnt
+
+if [ "$(swapon --show --noheadings)" = "" ]; then
+  echo "$(yellow "No swap is active. If you want swap, 'swapon' it now (in another shell)")"
+  echo "$(yellow "so it gets recorded in hardware-configuration.nix -- or skip it and add")"
+  echo "$(yellow "swapDevices to the flake later.")"
+else
+  echo "$(green "Active swap:")"
+  swapon --show
+fi
+
+echo
+echo "$(bold "Is this the layout you want to install onto?")"
+echo "$(yellow "Everything already under /mnt will be kept; nixos-install writes into it.")"
+select mounts_choice in "Yes, continue" "No, abort"; do
+  case "$mounts_choice" in
+  "Yes, continue")
     break
     ;;
-  "Make changes")
-    "${EDITOR:-nano}" "$DISKO_PATH"
-    break
+  "No, abort")
+    echo "$(red "Aborted. Fix the mounts and re-run.")"
+    exit 1
     ;;
   *)
     echo "$(red "Invalid choice, please try again.")"
     ;;
   esac
 done
-
-echo "$(bold "Partitioning and formatting the disk...")"
-nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko -- --mode destroy,format,mount "$DISKO_PATH"
-
-echo "$(green "Done. Resulting disk layout:")"
-lsblk -f
 
 TARGET_DOTFILES_DIR="/mnt/home/$USERNAME/dotfiles"
 
@@ -130,6 +145,11 @@ if [ -f "$HARDWARE_CONFIG_PATH" ]; then
   cat "$HARDWARE_CONFIG_PATH"
   echo
 
+  echo "$(yellow "Careful: this file now also carries the fileSystems/swapDevices entries.")"
+  echo "$(yellow "Only reuse it if its filesystem UUIDs match the disk you just partitioned --")"
+  echo "$(yellow "otherwise answer No and let it be regenerated from the current mounts.")"
+  echo
+
   echo "$(bold "Do you want to reuse this hardware configuration?")"
   select hardware_choice in "Yes" "No"; do
     case "$hardware_choice" in
@@ -154,16 +174,19 @@ if [ "$reuse_hardware_config" = true ]; then
   cp "$HARDWARE_CONFIG_PATH" "$HARDWARE_CONFIG_PATH.bak"
 fi
 
+# No --no-filesystems: nothing else declares the filesystems, so
+# hardware-configuration.nix has to carry the fileSystems (and swapDevices)
+# entries derived from what's currently mounted under /mnt.
 echo "$(bold "Generating NixOS flake configuration...")"
-nixos-generate-config --flake --no-filesystems --root /mnt
+nixos-generate-config --flake --root /mnt
 
 if [ "$reuse_hardware_config" = true ]; then
   mv "$HARDWARE_CONFIG_PATH.bak" "$HARDWARE_CONFIG_PATH"
 fi
 
 # nixos-generate-config always writes this, but nothing in flake.nix imports
-# it (the flake wires up hardware-configuration.nix and disko.nix directly),
-# so it's dead weight.
+# it (the flake wires up hardware-configuration.nix directly), so it's dead
+# weight.
 rm -f "$TARGET_DOTFILES_DIR/nix/configuration.nix"
 
 if [ "$flake_existed" = false ]; then

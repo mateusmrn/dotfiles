@@ -11,14 +11,12 @@ points at it. Editing a file nothing references changes nothing.
 
 ## The flake
 
-- `nix/flake.nix` — inputs (nixpkgs `nixos-26.05`, disko, home-manager) and two outputs:
+- `nix/flake.nix` — inputs (nixpkgs `nixos-26.05`, home-manager) and two outputs:
   `nixosConfigurations.nixos` (the full machine; `install.sh` renames the attr to the host) and
   `homeConfigurations.mateus` (standalone home-manager importing only `home.nix`, for non-NixOS
   machines). The inline system module holds boot/locale/networking, pipewire, fonts (including
   an Anthrosevka Mono derivation fetched from GitHub), greetd + tuigreet, bluetooth/Qt, docker,
   system packages, and the `mateus` user (fish as login shell).
-- `nix/disko.nix` — disk layout (GPT, 512M ESP + ext4 root, `/dev/vda` by default). Applying it
-  **destroys** the target disk.
 - `nix/home.nix` — portable user config: git, `gh`, fish (`l` theme), tmux, zoxide, mise,
   Neovim.
 - `nix/home-desktop.nix` — desktop-only: Hyprland/Quickshell config files, Alacritty, rofi,
@@ -26,7 +24,16 @@ points at it. Editing a file nothing references changes nothing.
   built from source), Obsidian, cursor theme, screenshot/clipboard tooling.
 - `nix/hardware-configuration.nix` and `nix/flake.lock` are per-machine and generated at
   install time, not tracked on this branch; `install.sh` can commit them to a per-host
-  backup branch.
+  backup branch. `hardware-configuration.nix` is the *only* thing declaring `fileSystems`
+  and `swapDevices` — `install.sh` generates it from the live `/mnt` mounts (no
+  `--no-filesystems`), so it is machine-specific and never portable between hosts.
+
+There is no disko. Partitioning, formatting and mounting are manual steps done before
+`install.sh` runs; the script only verifies that `/mnt` and `/mnt/boot` are mountpoints and
+asks for confirmation. This was deliberate — the disko config that declared this desktop's
+real dual-boot layout was reverted after an in-place `format,mount` run broke the Arch
+install sharing the disk. Don't reintroduce automated partitioning without a very good
+reason.
 
 Flake evaluation only sees git-tracked content, which is why `install.sh` runs `git add -A`
 before `nixos-install`. A brand-new file won't be picked up until it's at least staged.
