@@ -32,15 +32,10 @@ holds the actual config files those home-manager modules point at.
    `nix/hardware-configuration.nix`) going forward.
 5. Reboot into the new system and log in. A few things aren't (and shouldn't be) automated by
    the flake — log in interactively:
-   1. `gh auth login` — git itself authenticates to GitHub over HTTPS via `gh`'s credential
+   1. Sign into 1Password.
+   2. `gh auth login` — git itself authenticates to GitHub over HTTPS via `gh`'s credential
       helper (see `nix/home.nix`), so nothing works until this is done.
-   2. Sign into 1Password.
    3. Log into Claude Code (`claude`).
-
-If you're testing this in a VM without real GPU acceleration (e.g. VirtualBox's software-only
-3D support), pass `--hyprland-vm-fix` to force Hyprland onto a software renderer instead of
-crashing on launch. Not needed with QEMU/KVM + `virtio-gpu-gl`, which gives the guest real
-accelerated rendering.
 
 ## Using just `home.nix` elsewhere
 

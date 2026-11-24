@@ -27,8 +27,6 @@ points at it. Editing a file nothing references changes nothing.
 - `nix/hardware-configuration.nix` and `nix/flake.lock` are per-machine and generated at
   install time, not tracked on this branch; `install.sh` can commit them to a per-host
   backup branch.
-- `nix/.hyprland-vm-fix` — marker file written by `install.sh --hyprland-vm-fix`; `flake.nix`
-  tests `pathExists` on it to force `WLR_RENDERER=pixman` for GPU-less VMs. Never committed.
 
 Flake evaluation only sees git-tracked content, which is why `install.sh` runs `git add -A`
 before `nixos-install`. A brand-new file won't be picked up until it's at least staged.
