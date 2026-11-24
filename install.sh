@@ -33,24 +33,15 @@ echo "$(bold "$(blue "Welcome to Mateus' NixOS installer!")")"
 echo "This script will set up your NixOS environment based on this repo's flake configuration."
 echo
 
-mapfile -t branches < <(git -C "$SCRIPT_DIR" branch -r --format='%(refname:short)' | grep -v '/HEAD$' | sed 's#^[^/]*/##')
+# Whatever branch is checked out is the one that gets installed -- this
+# script never switches branches for you. Check out the branch you want
+# before running it.
+source_branch="$(git -C "$SCRIPT_DIR" rev-parse --abbrev-ref HEAD)"
 
-if [ ${#branches[@]} -eq 0 ]; then
-  echo "$(red "No branches found in the repository.")"
-  exit 1
-fi
-
-echo "$(bold "Which branch do you want to use to set up this environment?")"
-select source_branch in "${branches[@]}"; do
-  if [ -n "$source_branch" ]; then
-    break
-  fi
-  echo "$(red "Invalid choice, please try again.")"
-done
-
-echo "$(green "Selected branch:") $(bold "$source_branch")"
-
-git -C "$SCRIPT_DIR" checkout "$source_branch"
+echo "$(green "Installing from the currently checked-out branch:") $(bold "$source_branch")"
+echo "$(yellow "This script does not switch branches. If that isn't the branch you want, stop now")"
+echo "$(yellow "(Ctrl-C), 'git checkout' the one you do want, and run this script again.")"
+echo
 
 DISKO_PATH="$SCRIPT_DIR/nix/disko.nix"
 
