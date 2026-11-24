@@ -130,7 +130,11 @@
       splash = false;
       wallpaper = {
         monitor = "";
-        path = ../wallpapers/a_ship_in_the_water.jpg;
+        # Interpolated, not a bare path: toHyprconf sends scalar leaves through
+        # generators.mkValueStringDefault, which aborts on a Nix path value even
+        # though the option type accepts one. "${...}" copies the file into the
+        # store and yields its path as a string.
+        path = "${../wallpapers/a_ship_in_the_water.jpg}";
         fit_mode = "cover";
       };
     };
