@@ -223,7 +223,13 @@ if [ "$backup_choice" = "Yes" ]; then
     echo "$(yellow "Branch '$backup_branch' was created locally, but not pushed (no GitHub authentication set up yet). Remember to push it once you reboot into the new system.")"
   fi
 
-  backup_paths=(nix/hardware-configuration.nix)
+  AUTO_COMMIT_PATH="$TARGET_DOTFILES_DIR/nix/auto-commit.nix"
+  sed -i \
+    -e 's/default = false; # Set to true by install.sh'"'"'s backup-branch step./default = true;/' \
+    -e "s/default = \"\"; # Filled in by install.sh's backup-branch step./default = \"$backup_branch\";/" \
+    "$AUTO_COMMIT_PATH"
+
+  backup_paths=(nix/hardware-configuration.nix nix/auto-commit.nix)
 
   if [ "$flake_lock_existed" = true ]; then
     echo "$(yellow "nix/flake.lock already existed in '$source_branch'; nothing new to capture.")"

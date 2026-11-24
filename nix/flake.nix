@@ -28,6 +28,7 @@
           ./hardware-configuration.nix
           disko.nixosModules.disko
           ./disko.nix
+          ./auto-commit.nix
           home-manager.nixosModules.home-manager
 
           {
