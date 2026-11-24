@@ -2,11 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +12,6 @@
     {
       self,
       nixpkgs,
-      disko,
       home-manager,
       ...
     }:
@@ -25,9 +19,10 @@
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          # Carries fileSystems/swapDevices too: the disk is partitioned by
+          # hand and this file is generated from the live mounts at install
+          # time (see install.sh / README.md).
           ./hardware-configuration.nix
-          disko.nixosModules.disko
-          ./disko.nix
           ./auto-commit.nix
           home-manager.nixosModules.home-manager
 
