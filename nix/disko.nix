@@ -13,43 +13,18 @@
 # `uuid` on every partition pins its GPT GUID, since omitting it makes disko
 # pass `--partition-guid=N:R` (randomize) to sgdisk -- which would rewrite
 # Windows's partition GUIDs on every run otherwise, even in the no-op
-# relabel path.
+# relabel path. The explicit `priority` on every partition is equally
+# load-bearing: disko ties all partitions at the same default priority
+# (1000), and partition _index (which becomes the physical partition
+# number) is derived purely from priority-sort order, not attrset
+# declaration order -- get this wrong and disko could apply the wrong
+# type/label to the wrong physical partition. All start/end values are the
+# real on-disk sector offsets (`cat /sys/class/block/nvme0n1pN/{start,size}`
+# with size converted to end = start + size/512 - 1), read 2026-11-24.
 #
-# `_index` (internal, but not read-only) is set explicitly on every
-# partition rather than left to disko's priority-sort-based default. This
-# matters a lot here: _index becomes the literal physical partition number
-# sgdisk operates on, and leaving it auto-computed means removing an entry
-# (as below, where the old swap partition is gone) silently shifts every
-# later partition's computed index down by one -- which would make disko
-# try to operate on the wrong physical partition. Pinning it explicitly
-# removes that whole failure mode.
-#
-# PREREQUISITE -- disko cannot merge/delete pre-existing partitions; its
-# non-destroy mode can only create a partition in genuinely free space or
-# relabel an existing one in place. To fold the old Arch swap partition
-# into root, a one-time manual partition-table edit on the real disk is
-# required BEFORE ever running install.sh/disko against this config:
-#
-#   sudo sgdisk --delete=6 /dev/disk/by-id/nvme-XPG_GAMMIX_S70_BLADE_2P152LAEG22U
-#   sudo sgdisk --delete=5 /dev/disk/by-id/nvme-XPG_GAMMIX_S70_BLADE_2P152LAEG22U
-#   sudo sgdisk --new=5:579041280:996374527 --typecode=5:8300 --change-name=5:root \
-#     /dev/disk/by-id/nvme-XPG_GAMMIX_S70_BLADE_2P152LAEG22U
-#   sudo partprobe /dev/disk/by-id/nvme-XPG_GAMMIX_S70_BLADE_2P152LAEG22U
-#
-# This destroys whatever is currently on the Arch root and swap partitions
-# (expected -- a fresh NixOS install reformats root anyway) and leaves slot
-# 6 permanently unused (GPT partition numbers don't need to be contiguous,
-# so boot staying numbered 7 afterward is fine). Only slots 5 and 6 are
-# touched; Windows's 1-4 and the current boot partition's 7 are untouched.
-#
-# All start/end values are the real on-disk sector offsets
-# (`cat /sys/class/block/nvme0n1pN/{start,size}` with size converted to
-# end = start + size/512 - 1), read 2026-11-24, before the swap/root merge.
-#
-# Before ever running this for real: test it (and the prerequisite sgdisk
-# sequence) against a disk image with an identical partition layout first
-# (see this repo's QEMU VM setup), and always pass --dry-run before an
-# actual `--mode format,mount` run.
+# Before ever running this for real: test it against a disk image with an
+# identical partition layout first (see this repo's QEMU VM setup), and
+# always pass --dry-run before an actual `--mode format,mount` run.
 {
   disko.devices = {
     disk = {
@@ -61,7 +36,7 @@
           partitions = {
             # --- Windows's partitions, untouched (content = null) ---
             windows-esp = {
-              _index = 1;
+              priority = 100;
               start = "2048s";
               end = "206847s";
               type = "EF00";
@@ -70,7 +45,7 @@
               content = null;
             };
             windows-msr = {
-              _index = 2;
+              priority = 200;
               start = "206848s";
               end = "239615s";
               type = "0C01";
@@ -79,7 +54,7 @@
               content = null;
             };
             windows-data = {
-              _index = 3;
+              priority = 300;
               start = "239616s";
               end = "577388543s";
               type = "0700";
@@ -88,7 +63,7 @@
               content = null;
             };
             windows-recovery = {
-              _index = 4;
+              priority = 400;
               start = "577388544s";
               end = "579041279s";
               type = "2700";
@@ -98,14 +73,12 @@
             };
 
             # --- NixOS, replacing the previous Arch install in-place ---
-            # Covers the old root (p5) AND the old swap (p6)'s combined
-            # range -- see the PREREQUISITE comment above. No swap is
-            # configured; not needed, per request.
             root = {
-              _index = 5;
+              priority = 500;
               start = "579041280s";
-              end = "996374527s";
+              end = "983791615s";
               type = "8300";
+              uuid = "77d8e00d-4a26-4e9c-9da2-f73e50d3a45c";
               content = {
                 type = "filesystem";
                 format = "ext4";
@@ -113,14 +86,25 @@
               };
             };
 
+            # Previously Arch's swap. Not used initially (per request) --
+            # left entirely unmanaged, not reformatted, not referenced in
+            # swapDevices, so the 6G stays reclaimable later either way.
+            unused-swap = {
+              priority = 600;
+              start = "983791616s";
+              end = "996374527s";
+              type = "8300";
+              uuid = "665a7a21-8412-45b4-a002-983a16e6497d";
+              content = null;
+            };
+
             # Previously Arch's own separate /boot: GPT-typed as plain Linux
             # filesystem (8300), not EFI System, since Arch booted it via
             # GRUB + an explicit NVRAM entry rather than ESP auto-discovery.
             # Retyped to EF00 here since systemd-boot expects a properly
-            # typed ESP. Still physically partition 7 -- slot 6 (the old
-            # swap) is gone, not renumbered into.
+            # typed ESP.
             boot = {
-              _index = 7;
+              priority = 700;
               start = "996374528s";
               end = "998881279s";
               type = "EF00";
