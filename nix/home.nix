@@ -4,9 +4,8 @@
   home.homeDirectory = "/home/mateus";
   home.stateVersion = "26.05";
 
-  home.packages = [ 
-    pkgs.neovim 
-    pkgs.gh 
+  home.packages = [
+    pkgs.neovim
   ];
 
   programs.home-manager.enable = true;
@@ -25,6 +24,21 @@
       init.defaultBranch = "main";
       alias.nuke = "!git reset --hard HEAD && git clean -fd";
     };
+  };
+
+  programs.gh = {
+    enable = true;
+    settings = {
+      git_protocol = "https";
+      aliases.co = "pr checkout";
+    };
+    # No `hosts` here on purpose: setting it links ~/.config/gh/hosts.yml into
+    # the store read-only, and that is the file `gh auth login` writes the
+    # OAuth token to ("read-only file system"). hosts.yml is auth state, not
+    # config -- let gh own it; `user` is filled in on login. Keeping the module
+    # enabled is what declares the gh git credential helper in git's config
+    # (programs.gh.gitCredentialHelper), without which HTTPS pushes have no
+    # credentials.
   };
 
   programs.claude-code = {
