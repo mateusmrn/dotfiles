@@ -122,6 +122,18 @@
               # session: aggregates QT_PLUGIN_PATH/QML2_IMPORT_PATH across
               # everything in environment.systemPackages.
               qt.enable = true;
+              # Make Qt apps (dolphin, okular, Anki) follow the same dark
+              # setting as GTK instead of being themed separately:
+              # qgnomeplatform reads the org/gnome/desktop/interface dconf keys
+              # that home-manager's gtk.colorScheme writes. nixpkgs asserts
+              # platformTheme "gnome" requires an Adwaita/Breeze style.
+              qt.platformTheme = "gnome";
+              qt.style = "adwaita-dark";
+
+              # Only the GTK portal implements org.freedesktop.impl.portal.Settings;
+              # naming it explicitly avoids xdg-desktop-portal's "first available
+              # backend" fallback and the warning that comes with it.
+              xdg.portal.config.common."org.freedesktop.impl.portal.Settings" = [ "gtk" ];
 
               services.greetd = {
                 enable = true;

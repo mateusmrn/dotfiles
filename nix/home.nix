@@ -5,8 +5,28 @@
   home.stateVersion = "26.05";
 
   home.packages = [
-    pkgs.neovim
+    # Also on the shell PATH (not just nvim's, below): this repo is
+    # nixfmt-formatted and there is otherwise no way to format a .nix file
+    # outside the editor.
+    pkgs.nixfmt
   ];
+
+  # Neovim's formatter binaries live in extraPackages rather than
+  # home.packages: it wraps nvim with them on PATH, so conform.nvim's
+  # subprocesses find them without the whole set leaking into the shell. Only
+  # extraPackages is set, so the module writes nothing into ~/.config/nvim and
+  # the NvChad tree symlinked below stays intact.
+  programs.neovim = {
+    enable = true;
+    # Binaries conform.nvim shells out to (nvim/lua/configs/conform.lua).
+    extraPackages = with pkgs; [
+      stylua # lua
+      clang-tools # c/cpp -> clang-format
+      ruff # python -> ruff format
+      nixfmt # nix
+      prettier # js/ts/jsx/tsx
+    ];
+  };
 
   programs.home-manager.enable = true;
 

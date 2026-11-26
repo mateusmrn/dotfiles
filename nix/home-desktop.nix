@@ -16,6 +16,22 @@ in
     x11.enable = true;
   };
 
+  # Dark everywhere: colorScheme writes gtk-application-prefer-dark-theme into
+  # both gtk-3.0 and gtk-4.0 settings.ini *and* sets the dconf key
+  # org/gnome/desktop/interface color-scheme=prefer-dark, which is what
+  # xdg-desktop-portal-gtk serves as org.freedesktop.appearance color-scheme --
+  # the signal Firefox, Chromium/Electron and libadwaita apps follow. GTK3 apps
+  # also need a genuinely dark theme, hence Adwaita-dark. Enabling this module
+  # is also what finally applies home.pointerCursor's gtk cursor config above.
+  gtk = {
+    enable = true;
+    colorScheme = "dark";
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+  };
+
   home.packages = [
     pkgs.grim
     pkgs.slurp
@@ -263,5 +279,27 @@ in
         }
       ];
     };
+
+    profiles.default.search = {
+      engines = {
+              "Nix Options" = {
+        definedAliases = [ "@no" ];
+        icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+        urls = [ { template = "https://search.nixos.org/options?channel=unstable&query={searchTerms}"; } ];
+      };
+      "Nix Packages" = {
+        definedAliases = [ "@np" ];
+        icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+        urls = [ { template = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}"; } ];
+      };
+      "NixOS Wiki" = {
+        definedAliases = [ "@nw" ];
+        icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+        urls = [ { template = "https://wiki.nixos.org/w/index.php?search={searchTerms}"; } ];
+      };
+
+      };
+    };
+
   };
 }
