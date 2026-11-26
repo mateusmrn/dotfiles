@@ -27,6 +27,10 @@ in
     pkgs.kdePackages.okular
     pkgs.obsidian
     pkgs.quickshell
+    # services.hyprpaper only wires up a systemd unit (whose ExecStart is an
+    # absolute store path); the binary is not installed. hyprland.lua execs a
+    # bare `hyprpaper`, so it has to be on PATH.
+    pkgs.hyprpaper
 
     (pkgs.anki.withAddons [
       pkgs.ankiAddons.anki-connect
@@ -129,10 +133,13 @@ in
 
   programs.rofi = {
     enable = true;
-    settings = {
-      modi = "drun,run";
+    font = "Anthrosevka Mono 12";
+    modes = [
+      "drun"
+      "run"
+    ];
+    extraConfig = {
       show-icons = true;
-      font = "Anthrosevka Mono 12";
     };
     theme = ../rofi/theme.rasi;
   };
@@ -184,6 +191,18 @@ in
           installation_mode = "force_installed";
           updates_disabled = true;
           default_area = "navbar";
+        };
+      };
+
+      # Dark UI chrome, and advertise prefers-color-scheme: dark to pages.
+      Preferences = {
+        "ui.systemUsesDarkTheme" = {
+          Value = 1;
+          Status = "default";
+        };
+        "layout.css.prefers-color-scheme.content-override" = {
+          Value = 0;
+          Status = "default";
         };
       };
 

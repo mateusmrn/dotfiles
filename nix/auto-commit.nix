@@ -37,7 +37,7 @@ in
 
     system.activationScripts.dotfilesAutoCommit.text = ''
       if [ "$NIXOS_ACTION" = switch ]; then
-        if ! ${pkgs.util-linux}/bin/runuser -l mateus -c '
+        if ! ${pkgs.util-linux}/bin/runuser -l mateus -s ${pkgs.bash}/bin/bash -c '
           set -e
           cd /home/mateus/dotfiles
           ${pkgs.git}/bin/git add -A

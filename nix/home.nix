@@ -60,6 +60,7 @@
 
   programs.tmux = {
     enable = true;
+    keyMode = "vi";
     extraConfig = builtins.readFile ../tmux/.tmux.conf;
     plugins = with pkgs.tmuxPlugins; [
       resurrect
