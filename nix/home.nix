@@ -149,5 +149,21 @@
   programs.mise = {
     enable = true;
     enableFishIntegration = true;
+    globalConfig = {
+      # "3" tracks the newest stable 3.x -- `mise latest python@3` resolves to
+      # the same version as `python@latest` (3.15.2 today) since mise skips
+      # prereleases. Declaring the tool here is all Nix can do; fetching it is
+      # a runtime step (`mise install`).
+      tools.python = "3";
+
+      settings.python = {
+        # mise's built-in default on this platform is compile = true, which
+        # builds CPython from source with pyenv's python-build and needs a full
+        # C toolchain plus openssl/zlib/sqlite/readline headers. Take the
+        # precompiled python-build-standalone distributions instead -- those are
+        # ordinary FHS binaries, which is why flake.nix enables nix-ld.
+        compile = false;
+      };
+    };
   };
 }

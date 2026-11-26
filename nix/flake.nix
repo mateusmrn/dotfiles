@@ -123,6 +123,20 @@
               # ~/.nix-channels and ~/.nix-profile under ~/.local/state/nix.
               nix.settings.use-xdg-base-directories = true;
 
+              # mise installs precompiled python-build-standalone builds (see
+              # home.nix's programs.mise), which are ordinary FHS binaries
+              # looking for /lib64/ld-linux-x86-64.so.2. nix-ld provides that
+              # loader shim plus the libraries below.
+              programs.nix-ld = {
+                enable = true;
+                libraries = with pkgs; [
+                  stdenv.cc.cc.lib
+                  zlib
+                  openssl
+                  libxcrypt
+                ];
+              };
+
               hardware.bluetooth.enable = true;
 
               # Needed for Qt/KDE apps' QML plugins (e.g. bluedevil's Bluetooth
