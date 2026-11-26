@@ -47,6 +47,8 @@ in
     # absolute store path); the binary is not installed. hyprland.lua execs a
     # bare `hyprpaper`, so it has to be on PATH.
     pkgs.hyprpaper
+    pkgs._1password-gui
+    pkgs.spotify
 
     (pkgs.anki.withAddons [
       pkgs.ankiAddons.anki-connect

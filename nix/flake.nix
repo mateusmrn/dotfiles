@@ -160,7 +160,7 @@
                 pkgs.git
                 pkgs.less
                 pkgs.openssh
-                pkgs._1password-gui
+                pkgs.ripgrep
               ];
 
               users.users.mateus = {
