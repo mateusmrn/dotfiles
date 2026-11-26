@@ -4,7 +4,10 @@
   home.homeDirectory = "/home/mateus";
   home.stateVersion = "26.05";
 
-  home.packages = [ pkgs.neovim ];
+  home.packages = [ 
+    pkgs.neovim 
+    pkgs.gh 
+  ];
 
   programs.home-manager.enable = true;
 
