@@ -85,7 +85,13 @@ in
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "image/*" = "swayimg.desktop";
+      "image/png" = "swayimg.desktop";
+      "image/jpeg" = "swayimg.desktop";
+      "image/gif" = "swayimg.desktop";
+      "image/webp" = "swayimg.desktop";
+      "image/svg+xml" = "swayimg.desktop";
+      "image/bmp" = "swayimg.desktop";
+      "image/tiff" = "swayimg.desktop";
     };
   };
 
