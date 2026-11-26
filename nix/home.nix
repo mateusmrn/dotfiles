@@ -18,13 +18,33 @@
   # the NvChad tree symlinked below stays intact.
   programs.neovim = {
     enable = true;
-    # Binaries conform.nvim shells out to (nvim/lua/configs/conform.lua).
+    # External binaries nvim shells out to: conform.nvim formatters
+    # (nvim/lua/configs/conform.lua), language servers, and the treesitter
+    # parser toolchain.
     extraPackages = with pkgs; [
+      # conform.nvim formatters, per filetype.
       stylua # lua
       clang-tools # c/cpp -> clang-format
       ruff # python -> ruff format
       nixfmt # nix
       prettier # js/ts/jsx/tsx
+
+      # Language servers for every name in lspconfig.lua's `servers` list.
+      # vim.lsp.enable fails silently per server when the binary is absent.
+      pyright # pyright -> pyright-langserver
+      nixd # nixd
+      typescript-language-server # ts_ls
+      vscode-langservers-extracted # html + cssls language servers
+      # ruff doubles as the `ruff` server, clang-tools ships clangd.
+
+      # Parser toolchain for nvim-treesitter. The pinned commit is the
+      # main-branch rewrite, which shells out to `tree-sitter build` (see
+      # install.lua) and whose health check requires tree-sitter-cli >= 0.26.1
+      # -- without the CLI nothing in ensure_installed ever installs. gcc is
+      # what `tree-sitter build` compiles with; curl and tar are already on
+      # nvim's PATH.
+      tree-sitter
+      gcc
     ];
   };
 

@@ -66,11 +66,11 @@ return {
   },
 
   -- formatting!
+  -- formatters_by_ft lives in configs/conform.lua, which the plugins/init.lua
+  -- spec passes as opts; NvChad's upstream `lua = { "stylua" }` default was
+  -- redundant with it.
   {
     "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = { lua = { "stylua" } },
-    },
   },
 
   -- git stuff
