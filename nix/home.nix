@@ -24,18 +24,6 @@
     };
   };
 
-  programs.gh = {
-    enable = true;
-    settings = {
-      git_protocol = "https";
-      aliases.co = "pr checkout";
-    };
-    hosts."github.com" = {
-      git_protocol = "https";
-      user = "mateusmrn";
-    };
-  };
-
   programs.claude-code = {
     enable = true;
     settings.includeCoAuthoredBy = false;
