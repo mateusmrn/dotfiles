@@ -82,6 +82,13 @@ in
   xdg.configFile."hypr/scripts".source = ../hypr/scripts;
   xdg.configFile."quickshell".source = ../quickshell;
 
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "image/*" = "swayimg.desktop";
+    };
+  };
+
   programs.alacritty = {
     enable = true;
     settings = {
