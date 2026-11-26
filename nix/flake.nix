@@ -29,6 +29,10 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # Move an unmanaged file aside instead of aborting activation when
+            # home-manager wants to own a path some program already created
+            # (Firefox's profiles.ini and search.json.mozlz4, gh's config.yml...).
+            home-manager.backupFileExtension = "hm-bak";
             home-manager.users.mateus = {
               imports = [
                 ./home.nix

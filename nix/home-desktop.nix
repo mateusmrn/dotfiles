@@ -281,22 +281,26 @@ in
     };
 
     profiles.default.search = {
+      # Firefox rewrites search.json.mozlz4's symlink on every launch, so the
+      # declared engines only stick with force; the profile's existing search
+      # config is discarded in exchange.
+      force = true;
       engines = {
-              "Nix Options" = {
-        definedAliases = [ "@no" ];
-        icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-        urls = [ { template = "https://search.nixos.org/options?channel=unstable&query={searchTerms}"; } ];
-      };
-      "Nix Packages" = {
-        definedAliases = [ "@np" ];
-        icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-        urls = [ { template = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}"; } ];
-      };
-      "NixOS Wiki" = {
-        definedAliases = [ "@nw" ];
-        icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-        urls = [ { template = "https://wiki.nixos.org/w/index.php?search={searchTerms}"; } ];
-      };
+        "Nix Options" = {
+          definedAliases = [ "@no" ];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          urls = [ { template = "https://search.nixos.org/options?channel=unstable&query={searchTerms}"; } ];
+        };
+        "Nix Packages" = {
+          definedAliases = [ "@np" ];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          urls = [ { template = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}"; } ];
+        };
+        "NixOS Wiki" = {
+          definedAliases = [ "@nw" ];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          urls = [ { template = "https://wiki.nixos.org/w/index.php?search={searchTerms}"; } ];
+        };
 
       };
     };
