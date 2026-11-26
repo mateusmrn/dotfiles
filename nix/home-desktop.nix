@@ -51,6 +51,7 @@ in
     pkgs.hyprpaper
     pkgs._1password-gui
     pkgs.spotify
+    pkgs.kdePackages.okular
 
     (pkgs.anki.withAddons [
       pkgs.ankiAddons.anki-connect
