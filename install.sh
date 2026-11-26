@@ -265,6 +265,15 @@ if [ "$backup_choice" = "Yes" ]; then
   echo "$(yellow "Not pushing yet (no GitHub authentication set up at this point). It'll be pushed automatically after your next nixos-rebuild switch, or you can push it manually once you've run 'gh auth login'.")"
 fi
 
+# Everything above ran as root, so the repo copy, the generated
+# hardware-configuration.nix, nix's flake.lock and the backup-branch git
+# objects all ended up owned by root. Hand the home directory back to the
+# user; otherwise `nix flake update` and plain `git` in ~/dotfiles fail with
+# "Permission denied" until it's chowned by hand. Done inside nixos-enter so
+# the user and group names resolve against the installed system.
+echo "$(bold "Fixing ownership of /home/$USERNAME...")"
+nixos-enter --root /mnt -c "chown -R $USERNAME:users /home/$USERNAME"
+
 echo "$(bold "Set a password for the '$USERNAME' user")"
 while true; do
   read -rsp "$(bold "Password: ")" password_1

@@ -3,7 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -38,7 +38,7 @@
           }
 
           (
-            { pkgs, ... }:
+            { pkgs, config, ... }:
             {
               nixpkgs.config.allowUnfree = true;
 
@@ -56,6 +56,24 @@
               i18n.defaultLocale = "en_GB.UTF-8";
 
               networking.networkmanager.enable = true;
+
+              # GeForce RTX 3060 (Ampere/GA106) + Hyprland (Wayland).
+              services.xserver.videoDrivers = [ "nvidia" ];
+              hardware.nvidia = {
+                package = config.boot.kernelPackages.nvidiaPackages.stable;
+                # Matches nvidia-open already in use on Arch; Turing and
+                # later GPUs support the open-source kernel module.
+                open = true;
+                # Needed for Wayland compositors (Hyprland) to work at all
+                # on NVIDIA; also already the default for driver >= 535.
+                modesetting.enable = true;
+              };
+              hardware.graphics.enable = true;
+              environment.sessionVariables = {
+                LIBVA_DRIVER_NAME = "nvidia";
+                GBM_BACKEND = "nvidia-drm";
+                __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+              };
 
               services.pipewire = {
                 enable = true;
