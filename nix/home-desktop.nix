@@ -38,6 +38,8 @@ in
     pkgs.swappy
     pkgs.swayimg
     pkgs.wf-recorder
+    # provides xdg-user-dir, used by hypr/scripts/toggle-recording.sh
+    pkgs.xdg-user-dirs
     pkgs.wl-clipboard
     pkgs.kdePackages.dolphin
     pkgs.kdePackages.okular

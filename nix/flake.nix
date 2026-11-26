@@ -119,6 +119,10 @@
 
               programs.hyprland.enable = true;
 
+              # XDG base directory spec for nix itself: moves ~/.nix-defexpr,
+              # ~/.nix-channels and ~/.nix-profile under ~/.local/state/nix.
+              nix.settings.use-xdg-base-directories = true;
+
               hardware.bluetooth.enable = true;
 
               # Needed for Qt/KDE apps' QML plugins (e.g. bluedevil's Bluetooth

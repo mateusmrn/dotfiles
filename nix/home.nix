@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   home.username = "mateus";
   home.homeDirectory = "/home/mateus";
@@ -26,6 +26,33 @@
       nixfmt # nix
       prettier # js/ts/jsx/tsx
     ];
+  };
+
+  # XDG base directory spec: export the user-level XDG_*_HOME variables (apps
+  # otherwise only land in ~/.config etc. by spec default, with nothing telling
+  # them to) and make home-manager modules prefer XDG paths over $HOME
+  # dotfiles -- of the modules honoring it, gtk2 is the one in use here, so
+  # ~/.gtkrc-2.0 moves to ~/.config/gtk-2.0/gtkrc.
+  xdg.enable = true;
+  home.preferXdgDirectories = true;
+
+  # Writes ~/.config/user-dirs.dirs so file pickers and xdg-user-dir resolve.
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+    desktop = "${config.home.homeDirectory}/Desktop";
+    documents = "${config.home.homeDirectory}/Documents";
+    download = "${config.home.homeDirectory}/Downloads";
+    music = "${config.home.homeDirectory}/Music";
+    pictures = "${config.home.homeDirectory}/Pictures";
+    videos = "${config.home.homeDirectory}/Videos";
+    # Upstream defaults these, but nothing on this system consumes them:
+    # PublicShare needs a sharing daemon, Templates only feeds Dolphin's
+    # "Create New" menu, and Projects isn't even a name xdg-user-dir(1) can
+    # look up. null keeps createDirectories from making them.
+    projects = null;
+    publicShare = null;
+    templates = null;
   };
 
   programs.home-manager.enable = true;
