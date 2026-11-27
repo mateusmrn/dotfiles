@@ -145,12 +145,24 @@
               # everything in environment.systemPackages.
               qt.enable = true;
               # Make Qt apps (dolphin, okular, Anki) follow the same dark
-              # setting as GTK instead of being themed separately:
-              # qgnomeplatform reads the org/gnome/desktop/interface dconf keys
-              # that home-manager's gtk.colorScheme writes. nixpkgs asserts
-              # platformTheme "gnome" requires an Adwaita/Breeze style.
-              qt.platformTheme = "gnome";
-              qt.style = "adwaita-dark";
+              # setting as GTK instead of being themed separately. The signal
+              # has to reach them as Qt 6.5's QStyleHints::colorScheme(), not
+              # just as a palette: KDE apps call KIconTheme::initTheme(), which
+              # instantiates KColorSchemeManager, which overwrites the whole
+              # application palette with Breeze Light unless colorScheme()
+              # reports Dark. qgnomeplatform (platformTheme "gnome") predates
+              # that API and always leaves it Unknown, so dolphin/okular came
+              # out light-palette-under-dark-widget-style. qtbase's built-in
+              # xdgdesktopportal theme does implement it, reading
+              # org.freedesktop.appearance color-scheme -- i.e. the same
+              # gtk.colorScheme setting, over the portal pinned just below.
+              # It isn't in qt.platformTheme's enum, hence the raw variable.
+              qt.platformTheme = null;
+              environment.variables.QT_QPA_PLATFORMTHEME = "xdgdesktopportal";
+              # Breeze rather than adwaita-dark so the widget style and the
+              # Breeze Dark palette KColorSchemeManager applies agree; this
+              # also installs the share/color-schemes files it reads.
+              qt.style = "breeze";
 
               # Only the GTK portal implements org.freedesktop.impl.portal.Settings;
               # naming it explicitly avoids xdg-desktop-portal's "first available
