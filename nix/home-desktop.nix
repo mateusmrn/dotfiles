@@ -51,7 +51,6 @@ in
     pkgs.hyprpaper
     pkgs._1password-gui
     pkgs.spotify
-    pkgs.kdePackages.okular
 
     (pkgs.anki.withAddons [
       pkgs.ankiAddons.anki-connect
@@ -85,6 +84,10 @@ in
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
+      # okular's own org.kde.okular.desktop only claims okular-archive; the
+      # per-format okularApplication_*.desktop entries are what carry the
+      # real mime types.
+      "application/pdf" = "okularApplication_pdf.desktop";
       "image/png" = "swayimg.desktop";
       "image/jpeg" = "swayimg.desktop";
       "image/gif" = "swayimg.desktop";
