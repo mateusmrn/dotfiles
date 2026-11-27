@@ -169,6 +169,34 @@
               # backend" fallback and the warning that comes with it.
               xdg.portal.config.common."org.freedesktop.impl.portal.Settings" = [ "gtk" ];
 
+              # KService (how dolphin resolves "what opens this file") does not
+              # scan $XDG_DATA_DIRS/applications directly: it enumerates
+              # applications by walking the XDG menu file
+              # $XDG_CONFIG_DIRS/menus/${XDG_MENU_PREFIX}applications.menu, and
+              # registers only what that walk reaches. Nothing installed here
+              # ships one -- every desktop that does ships it prefixed
+              # (plasma-, gnome-, xfce-) and sets XDG_MENU_PREFIX to match, and
+              # xdg.menus.enable only links the directories, it provides no
+              # menu. With the file missing, ksycoca ends up with zero
+              # applications, so every mimeapps.list entry resolves to
+              # "unknown service" and dolphin falls back to the Open With
+              # dialog for every file type. <All/> is deliberate: this exists
+              # to populate ksycoca, not to build a categorised app menu.
+              environment.etc."xdg/menus/applications.menu".text = ''
+                <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+                 "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+                <Menu>
+                  <Name>Applications</Name>
+                  <Directory>Applications.directory</Directory>
+                  <DefaultAppDirs/>
+                  <DefaultDirectoryDirs/>
+                  <DefaultMergeDirs/>
+                  <Include>
+                    <All/>
+                  </Include>
+                </Menu>
+              '';
+
               services.greetd = {
                 enable = true;
                 settings.default_session.command = "tuigreet --time --remember --remember-session --asterisks";
